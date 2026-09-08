@@ -305,7 +305,7 @@
   .blog__vacio p{color:var(--grafito);font-size:.94rem;max-width:52ch}
 
   /* --- quienes nos eligen: slider de logos con auto-scroll infinito --- */
-  .clientes{background:var(--carbon);overflow:hidden}
+  .clientes{background:var(--carbon);overflow:hidden;padding-bottom:2.2rem}
   .clientes .tit{color:var(--gris-claro)}
   .marquee{
     margin-top:1.5rem;overflow:hidden;
@@ -321,12 +321,12 @@
   .logo-chip{
     flex:none;display:flex;align-items:center;justify-content:center;
     height:80px;min-width:150px;padding:.9rem 1.4rem;border-radius:8px;
-    background:rgba(236,234,237,.05);border:1px solid rgba(236,234,237,.1);
+    background:var(--carbon);border:1px solid rgba(236,234,237,.16);
   }
   .logo-chip img{max-height:100%;max-width:118px;width:auto;object-fit:contain;border-radius:6px}
   .logo-chip span{
     font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.03em;
-    font-size:.86rem;line-height:1.2;text-align:center;color:var(--gris-claro);opacity:.8;
+    font-size:.92rem;line-height:1.2;text-align:center;color:var(--gris-claro);opacity:.85;
   }
 
   /* --- equipo a9.10 --- */
@@ -340,16 +340,18 @@
   @media(min-width:760px){.vp{grid-template-columns:1fr 1fr;gap:3rem}}
   .vp article p{margin-top:.7rem;color:var(--grafito);font-size:.92rem;max-width:42ch}
 
-  /* --- cómo lo hacemos: grid numerado (la clienta pidió "mejor un gráfico" en vez de texto corrido) --- */
+  /* --- valores fundamentales: diagrama de 4 íconos (la clienta pidió menos texto y un gráfico) --- */
   .metodo{display:grid;gap:2.6rem 3rem;margin-top:2.4rem}
   @media(min-width:700px){.metodo{grid-template-columns:1fr 1fr}}
-  .metodo__fila{padding-top:1.4rem;border-top:1px solid var(--linea)}
-  .metodo__n{
-    font-family:'Antonio',sans-serif;font-size:1.7rem;font-weight:500;
-    color:var(--naranja);letter-spacing:.03em;display:block;line-height:1;
+  .metodo__fila{padding-top:1.6rem;border-top:1px solid var(--linea)}
+  .metodo__ic{
+    width:46px;height:46px;color:var(--naranja);
+    display:flex;align-items:center;justify-content:center;
   }
-  .metodo__fila h4{font-size:1.05rem;font-weight:500;margin-top:.6rem}
-  .metodo__fila p{color:var(--grafito);font-size:.9rem;max-width:46ch;margin-top:.6rem}
+  .metodo__ic svg{width:100%;height:100%}
+  .metodo__fila h4{font-size:1.05rem;font-weight:500;margin-top:1rem;display:flex;align-items:baseline;gap:.55rem}
+  .metodo__n{font-family:'Antonio',sans-serif;font-size:.8rem;color:var(--naranja);letter-spacing:.03em}
+  .metodo__fila p{color:var(--grafito);font-size:.88rem;max-width:38ch;margin-top:.5rem}
 
 
   /* --- portafolio: filtro + grilla --- */
@@ -793,24 +795,24 @@
       <h2 class="tit rv" style="margin-top:.6rem"><span>Cuatro principios,</span><span>un mismo criterio</span></h2>
       <div class="metodo">
         <div class="metodo__fila rv">
-          <span class="metodo__n">01</span>
-          <h4>Diferenciación y autoría espacial</h4>
-          <p>No replicamos fórmulas. Cada proyecto es una pieza única, concebida con una materialidad auténtica y una atmósfera inconfundible que eleva el diseño por encima de lo genérico, sin importar su latitud geográfica.</p>
+          <div class="metodo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 3v3.5M12 17.5V21M9 12l2-2 2 2-2 2z"/></svg></div>
+          <h4><span class="metodo__n">01</span>Diferenciación y autoría espacial</h4>
+          <p>Cada proyecto es una pieza única, con materialidad auténtica y una atmósfera inconfundible.</p>
         </div>
         <div class="metodo__fila rv">
-          <span class="metodo__n">02</span>
-          <h4>Vanguardia y sutileza</h4>
-          <p>Abordamos la creación desde una perspectiva no convencional. La creatividad fluye con elegancia, priorizando espacios limpios, libres de ruido visual y obsesionados con la pulcritud del detalle.</p>
+          <div class="metodo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/></svg></div>
+          <h4><span class="metodo__n">02</span>Vanguardia y sutileza</h4>
+          <p>Espacios limpios, sin ruido visual, obsesionados con la pulcritud del detalle.</p>
         </div>
         <div class="metodo__fila rv">
-          <span class="metodo__n">03</span>
-          <h4>Compromiso sensorial</h4>
-          <p>Diseñamos pensando en las emociones. Nuestro nivel de autoexigencia nos obliga a calibrar cada textura, sombra e incidencia de luz para garantizar que la experiencia final inspire calma y misterio.</p>
+          <div class="metodo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2.5 12h3M18.5 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></div>
+          <h4><span class="metodo__n">03</span>Compromiso sensorial</h4>
+          <p>Calibramos cada textura, sombra y luz para que la experiencia inspire calma.</p>
         </div>
         <div class="metodo__fila rv">
-          <span class="metodo__n">04</span>
-          <h4>Talento y desarrollo humano</h4>
-          <p>Formamos un ecosistema de trabajo impulsado por la libertad y el rigor, cultivando talentos que comprenden la verdadera sutileza de la arquitectura de clase mundial.</p>
+          <div class="metodo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8.5" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.3"/><path d="M2.8 20c0-3.1 2.5-5.7 5.7-5.7s5.7 2.6 5.7 5.7M14.6 14.7c2.3.4 4 2.3 4 4.7"/></svg></div>
+          <h4><span class="metodo__n">04</span>Talento y desarrollo humano</h4>
+          <p>Un equipo que crece con libertad y rigor, al nivel de la arquitectura mundial.</p>
         </div>
       </div>
     </div>
