@@ -304,27 +304,28 @@
   .blog__vacio{padding:2.6rem 0 .5rem;border-bottom:1px solid var(--linea)}
   .blog__vacio p{color:var(--grafito);font-size:.94rem;max-width:52ch}
 
-  /* --- quienes nos eligen: lista de texto (sin logos por ahora) --- */
-  .clientes{background:var(--carbon)}
-  .clientes .eyebrow{color:var(--gris)}
+  /* --- quienes nos eligen: slider de logos con auto-scroll infinito --- */
+  .clientes{background:var(--carbon);overflow:hidden}
   .clientes .tit{color:var(--gris-claro)}
-  /* muro de clientes: la referencia del brief (image4) pide logos; hasta que la clienta
-     comparta los archivos, van los wordmarks en la misma retícula, agrandados para que
-     ocupen el espacio en vez de verse sueltos */
-  .clientes-lista{
-    display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:3.2rem;
-    background:rgba(236,234,237,.09);border:1px solid rgba(236,234,237,.09);
+  .marquee{
+    margin-top:3.2rem;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
   }
-  @media(min-width:560px){.clientes-lista{grid-template-columns:repeat(3,1fr)}}
-  @media(min-width:920px){.clientes-lista{grid-template-columns:repeat(4,1fr)}}
-  .clientes-lista span{
-    background:var(--carbon);display:flex;align-items:center;justify-content:center;
-    text-align:center;padding:2.2rem 1.2rem;min-height:132px;
-    font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.04em;
-    font-size:1.08rem;line-height:1.3;color:var(--gris);opacity:.72;
-    transition:opacity .3s,color .3s;
+  .marquee__track{display:flex;gap:1.1rem;width:max-content;animation:marquee 42s linear infinite}
+  .marquee:hover .marquee__track{animation-play-state:paused}
+  .marquee__set{display:flex;align-items:stretch;gap:1.1rem;flex:none}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .logo-chip{
+    flex:none;display:flex;align-items:center;justify-content:center;
+    height:88px;min-width:158px;padding:1.2rem 1.7rem;border-radius:4px;
+    background:var(--crema);
   }
-  .clientes-lista span:hover{opacity:1;color:var(--gris-claro)}
+  .logo-chip img{max-height:100%;max-width:132px;width:auto;object-fit:contain;border-radius:5px}
+  .logo-chip span{
+    font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.03em;
+    font-size:.92rem;line-height:1.2;text-align:center;color:var(--tinta);
+  }
 
   /* --- equipo a9.10 --- */
   .equipo{display:grid;gap:2rem;margin-top:2.2rem}
@@ -337,16 +338,16 @@
   @media(min-width:760px){.vp{grid-template-columns:1fr 1fr;gap:3rem}}
   .vp article p{margin-top:.7rem;color:var(--grafito);font-size:.92rem;max-width:42ch}
 
-  /* --- cómo lo hacemos --- */
-  .metodo{display:grid;gap:0;margin-top:2rem}
-  .metodo__fila{
-    display:grid;gap:.3rem 2rem;padding-block:1.5rem;border-top:1px solid var(--linea);
-    grid-template-columns:1fr;
+  /* --- cómo lo hacemos: grid numerado (la clienta pidió "mejor un gráfico" en vez de texto corrido) --- */
+  .metodo{display:grid;gap:2.6rem 3rem;margin-top:2.4rem}
+  @media(min-width:700px){.metodo{grid-template-columns:1fr 1fr}}
+  .metodo__fila{padding-top:1.4rem;border-top:1px solid var(--linea)}
+  .metodo__n{
+    font-family:'Antonio',sans-serif;font-size:1.7rem;font-weight:500;
+    color:var(--naranja);letter-spacing:.03em;display:block;line-height:1;
   }
-  .metodo__fila:last-child{border-bottom:1px solid var(--linea)}
-  @media(min-width:760px){.metodo__fila{grid-template-columns:minmax(0,20ch) 1fr}}
-  .metodo__fila h4{font-size:1rem;font-weight:500}
-  .metodo__fila p{color:var(--grafito);font-size:.9rem;max-width:52ch}
+  .metodo__fila h4{font-size:1.05rem;font-weight:500;margin-top:.6rem}
+  .metodo__fila p{color:var(--grafito);font-size:.9rem;max-width:46ch;margin-top:.6rem}
 
 
   /* --- portafolio: filtro + grilla --- */
@@ -510,7 +511,7 @@
       <svg class="i-abrir" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       <svg class="i-cerrar" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
-    <img src="assets/marca/logo-marca.png" alt="Atelier 9.10">
+    <a href="#inicio" data-panel="inicio" aria-label="Ir al inicio"><img src="assets/marca/logo-marca.png" alt="Atelier 9.10"></a>
     <div class="barra__acciones">
       <nav>
         <a href="#inicio" data-panel="inicio">Inicio</a>
@@ -556,7 +557,6 @@
       <img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada frente al mar">
     </div>
     <div class="wrap hero__in">
-      <p class="hero__eyebrow rv">Atelier 9.10 · Tacna, Perú</p>
       <h1 class="tit rv"><span>Identidad +</span><span>Atemporal + Elegancia</span></h1>
       <p class="rv">Diseñamos arquitectura, interiores y mobiliario donde la proporción, la luz natural y la materialidad pura se convierten en experiencia.</p>
       <a class="hero__cta rv" href="#obra" data-panel="proyectos">Ver proyectos</a>
@@ -569,8 +569,7 @@
 
   <section class="servicios" id="disciplinas">
     <div class="wrap">
-      <p class="eyebrow rv">Lo que hacemos</p>
-      <h2 class="servicios__tit rv">Servicios</h2>
+      <h2 class="servicios__tit rv">Lo que hacemos</h2>
       <span class="servicios__rule rv"></span>
     </div>
     <div class="servicios__band">
@@ -628,12 +627,10 @@
   <section class="con-linea" id="destacados">
     <div class="wrap dos-col">
       <div>
-        <p class="eyebrow rv">Espacios con historia</p>
-        <h2 class="tit rv" style="margin-top:.6rem"><span>Un proyecto por</span><span>cada disciplina</span></h2>
+        <h2 class="tit rv">Espacios con historia</h2>
       </div>
       <div class="rv">
-        <p>Cinco proyectos que resumen nuestro rango: de la vivienda a la puesta en valor patrimonial, ejecutados de principio a fin.</p>
-        <a class="flecha" href="#obra" data-panel="proyectos" style="margin-top:1.3rem">Ver toda la obra <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        <a class="flecha" href="#obra" data-panel="proyectos" style="margin-top:1.3rem">Explorar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </div>
     </div>
 
@@ -643,7 +640,6 @@
         <div class="destacado__ov">
           <p class="eyebrow">Residencial</p>
           <h3>Casa Cardoza</h3>
-          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
         </div>
       </article>
       <article class="destacado rv" data-obra="Home Ideas — Cusco" tabindex="0" role="button" aria-label="Ver Home Ideas — Cusco">
@@ -651,7 +647,6 @@
         <div class="destacado__ov">
           <p class="eyebrow">Comercial</p>
           <h3>Home Ideas — Cusco</h3>
-          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
         </div>
       </article>
       <article class="destacado rv" data-obra="Animales Nocturnos — Arequipa" tabindex="0" role="button" aria-label="Ver Animales Nocturnos">
@@ -659,7 +654,6 @@
         <div class="destacado__ov">
           <p class="eyebrow">Gastronómico</p>
           <h3>Animales Nocturnos</h3>
-          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
         </div>
       </article>
       <article class="destacado rv" data-obra="Ez Cont" tabindex="0" role="button" aria-label="Ver Ez Cont">
@@ -667,7 +661,6 @@
         <div class="destacado__ov">
           <p class="eyebrow">Especializado</p>
           <h3>Ez Cont</h3>
-          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
         </div>
       </article>
       <article class="destacado rv" data-obra="Ecodomos de Chuschuco" tabindex="0" role="button" aria-label="Ver Ecodomos de Chuschuco">
@@ -675,7 +668,6 @@
         <div class="destacado__ov">
           <p class="eyebrow">Valorización</p>
           <h3>Ecodomos de Chuschuco</h3>
-          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
         </div>
       </article>
     </div>
@@ -683,15 +675,64 @@
 
   <section class="con-linea clientes" id="clientes">
     <div class="wrap">
-      <p class="eyebrow rv">Algunos de</p>
-      <h2 class="tit rv" style="margin-top:.6rem"><span>Quienes nos</span><span>eligen</span></h2>
-      <div class="clientes-lista rv">
-        <span>Home Ideas</span><span>One Marie</span><span>RollaLux</span><span>French Essenc's</span>
-        <span>Decorela</span><span>ALPO</span><span>Joyería Catalina</span><span>Joyería Centro Suizo</span>
-        <span>Colegio de Odontólogos de Tacna</span><span>Bonarisa</span><span>Dento Tacna</span><span>Select Dent</span>
-        <span>Montefiori Kids</span><span>Ez Cont</span><span>Osana</span><span>Oirt+</span>
-        <span>Animales Nocturnos</span><span>Gustitos en Casa</span><span>Gangnam</span><span>Vega's</span>
-        <span>Panadería Delizzia</span><span>La Ponde</span><span>Las Bugas</span><span>MUU</span><span>Rey Dorado</span>
+      <h2 class="tit rv"><span>Quienes nos</span><span>eligen</span></h2>
+    </div>
+    <div class="marquee rv">
+      <div class="marquee__track">
+        <div class="marquee__set">
+          <span class="logo-chip" data-cliente="home-ideas"><img src="assets/marca/clientes/home-ideas.svg" alt="Home Ideas"></span>
+          <span class="logo-chip" data-cliente="one-marie"><img src="assets/marca/clientes/one-marie.jpg" alt="One Marie"></span>
+          <span class="logo-chip" data-cliente="rollalux"><span>RollaLux</span></span>
+          <span class="logo-chip" data-cliente="french-essencs"><img src="assets/marca/clientes/french-essencs.jpg" alt="French Essenc's"></span>
+          <span class="logo-chip" data-cliente="decorela"><span>Decorela</span></span>
+          <span class="logo-chip" data-cliente="alpo"><img src="assets/marca/clientes/alpo.jpg" alt="ALPO"></span>
+          <span class="logo-chip" data-cliente="joyeria-catalina"><span>Joyería Catalina</span></span>
+          <span class="logo-chip" data-cliente="joyeria-centro-suizo"><img src="assets/marca/clientes/joyeria-centro-suizo.jpg" alt="Joyería Centro Suizo"></span>
+          <span class="logo-chip" data-cliente="colegio-odontologos-tacna"><img src="assets/marca/clientes/colegio-odontologos-tacna.jpg" alt="Colegio de Odontólogos de Tacna"></span>
+          <span class="logo-chip" data-cliente="bonarisa"><span>Bonarisa</span></span>
+          <span class="logo-chip" data-cliente="dento-tacna"><img src="assets/marca/clientes/dento-tacna.jpg" alt="Dento Tacna"></span>
+          <span class="logo-chip" data-cliente="select-dent"><span>Select Dent</span></span>
+          <span class="logo-chip" data-cliente="montefiori-kids"><img src="assets/marca/clientes/montefiori-kids.jpg" alt="Montefiori Kids"></span>
+          <span class="logo-chip" data-cliente="ez-cont"><span>Ez Cont</span></span>
+          <span class="logo-chip" data-cliente="osana"><span>Osana</span></span>
+          <span class="logo-chip" data-cliente="oirt-plus"><img src="assets/marca/clientes/oirt-plus.jpg" alt="Oirt+"></span>
+          <span class="logo-chip" data-cliente="animales-nocturnos"><img src="assets/marca/clientes/animales-nocturnos.jpg" alt="Animales Nocturnos"></span>
+          <span class="logo-chip" data-cliente="gustitos-en-casa"><img src="assets/marca/clientes/gustitos-en-casa.jpg" alt="Gustitos en Casa"></span>
+          <span class="logo-chip" data-cliente="gangnam"><img src="assets/marca/clientes/gangnam.jpg" alt="Gangnam"></span>
+          <span class="logo-chip" data-cliente="vegas"><img src="assets/marca/clientes/vegas.jpg" alt="Vega's"></span>
+          <span class="logo-chip" data-cliente="panaderia-delizzia"><span>Panadería Delizzia</span></span>
+          <span class="logo-chip" data-cliente="la-ponde"><img src="assets/marca/clientes/la-ponde.jpg" alt="La Ponde"></span>
+          <span class="logo-chip" data-cliente="las-bugas"><span>Las Bugas</span></span>
+          <span class="logo-chip" data-cliente="muu"><img src="assets/marca/clientes/muu.jpg" alt="MUU"></span>
+          <span class="logo-chip" data-cliente="rey-dorado"><img src="assets/marca/clientes/rey-dorado.jpg" alt="Rey Dorado"></span>
+        </div>
+        <div class="marquee__set" aria-hidden="true">
+          <span class="logo-chip"><img src="assets/marca/clientes/home-ideas.svg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/one-marie.jpg" alt=""></span>
+          <span class="logo-chip"><span>RollaLux</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/french-essencs.jpg" alt=""></span>
+          <span class="logo-chip"><span>Decorela</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/alpo.jpg" alt=""></span>
+          <span class="logo-chip"><span>Joyería Catalina</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/joyeria-centro-suizo.jpg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/colegio-odontologos-tacna.jpg" alt=""></span>
+          <span class="logo-chip"><span>Bonarisa</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/dento-tacna.jpg" alt=""></span>
+          <span class="logo-chip"><span>Select Dent</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/montefiori-kids.jpg" alt=""></span>
+          <span class="logo-chip"><span>Ez Cont</span></span>
+          <span class="logo-chip"><span>Osana</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/oirt-plus.jpg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/animales-nocturnos.jpg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/gustitos-en-casa.jpg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/gangnam.jpg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/vegas.jpg" alt=""></span>
+          <span class="logo-chip"><span>Panadería Delizzia</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/la-ponde.jpg" alt=""></span>
+          <span class="logo-chip"><span>Las Bugas</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/muu.jpg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/rey-dorado.jpg" alt=""></span>
+        </div>
       </div>
     </div>
   </section>
@@ -706,7 +747,7 @@
       </div>
       <div class="rv">
         <p>Atelier 9.10 es un estudio de arquitectura y diseño de interiores de alta gama. Con raíces en Tacna, hemos trascendido fronteras para llevar nuestra visión a un escenario nacional e internacional. Nos alejamos de lo genérico para diseñar atmósferas atemporales que reconectan al ser humano con su estado más orgánico. Nuestra firma se caracteriza por esculpir espacios que generan sensaciones reconfortantes a través de un dominio absoluto de las proporciones, la luz natural, la materialidad pura y la integración sutil de la vegetación.</p>
-        <a class="flecha" href="#obra" data-panel="proyectos" style="margin-top:1.3rem">Sobre el estudio <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        <a class="flecha" href="#obra" data-panel="proyectos" style="margin-top:1.3rem">Sobre el equipo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </div>
     </div>
     <div class="wrap par-asim rv">
@@ -714,7 +755,8 @@
       <figure class="im-b"><img src="assets/obra/casa-yaco-comedor.jpg" alt="Casa Yaco, comedor con mural botánico"></figure>
     </div>
     <div class="wrap rv" style="margin-top:2.8rem">
-      <p class="promesa">"Diseñar trasciende la pasión; es el arte de interpretar tu esencia."</p>
+      <p class="promesa">"El espacio arquitectónico debe ser un reflejo de la vida humana, debe adaptarse a ella."</p>
+      <p class="eyebrow" style="margin-top:.6rem">— Lina Bo Bardi</p>
     </div>
   </section>
 
@@ -741,18 +783,22 @@
       <h2 class="tit rv" style="margin-top:.6rem"><span>Cuatro principios,</span><span>un mismo criterio</span></h2>
       <div class="metodo">
         <div class="metodo__fila rv">
+          <span class="metodo__n">01</span>
           <h4>Diferenciación y autoría espacial</h4>
           <p>No replicamos fórmulas. Cada proyecto es una pieza única, concebida con una materialidad auténtica y una atmósfera inconfundible que eleva el diseño por encima de lo genérico, sin importar su latitud geográfica.</p>
         </div>
         <div class="metodo__fila rv">
+          <span class="metodo__n">02</span>
           <h4>Vanguardia y sutileza</h4>
           <p>Abordamos la creación desde una perspectiva no convencional. La creatividad fluye con elegancia, priorizando espacios limpios, libres de ruido visual y obsesionados con la pulcritud del detalle.</p>
         </div>
         <div class="metodo__fila rv">
+          <span class="metodo__n">03</span>
           <h4>Compromiso sensorial</h4>
           <p>Diseñamos pensando en las emociones. Nuestro nivel de autoexigencia nos obliga a calibrar cada textura, sombra e incidencia de luz para garantizar que la experiencia final inspire calma y misterio.</p>
         </div>
         <div class="metodo__fila rv">
+          <span class="metodo__n">04</span>
           <h4>Talento y desarrollo humano</h4>
           <p>Formamos un ecosistema de trabajo impulsado por la libertad y el rigor, cultivando talentos que comprenden la verdadera sutileza de la arquitectura de clase mundial.</p>
         </div>
@@ -862,17 +908,18 @@
 
 <footer>
   <div class="wrap footer__cta">
-    <h2 class="tit rv" style="margin-top:.6rem"><span>Conversemos sobre</span><span>tu próximo proyecto</span></h2>
+    <h2 class="tit rv" style="margin-top:.6rem"><span>Transformamos tu espacio,</span><span>creamos historias</span></h2>
     <a class="footer__wa rv" href="https://wa.me/51976627928" target="_blank" rel="noopener">Escribir por WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
   </div>
   <div class="wrap footer__base">
     <div class="footer__marca">
-      <img src="assets/marca/logo-marca.png" alt="Atelier 9.10">
+      <a href="#inicio" data-panel="inicio" aria-label="Ir al inicio"><img src="assets/marca/logo-marca.png" alt="Atelier 9.10"></a>
       <span>Atelier 9.10 — Arquitectura &amp; Diseño de Interiores</span>
     </div>
     <div class="footer__base-der">
       <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Instagram</a>
       <a href="https://www.facebook.com/atelier9.10" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://pe.linkedin.com/company/atelier910" target="_blank" rel="noopener">LinkedIn</a>
       <span>© Atelier 9.10 — Tacna, Perú</span>
     </div>
   </div>
