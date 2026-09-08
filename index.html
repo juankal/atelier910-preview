@@ -48,7 +48,7 @@
   /* --- vocabulario compartido --- */
   /* Antonio (titular/label) cubre el rol de "ANTONIO" del brief; Allura (más abajo)
      el de "Allura". Swis721 LtCn BT queda cubierto por Barlow Condensed en el body. */
-  h1,h2,h3,h4,.tit,.eyebrow,.barra nav a,.filtro button,.flecha,.footer__cols h5{
+  h1,h2,h3,h4,.tit,.eyebrow,.barra nav a,.filtro button,.flecha{
     font-family:'Antonio',sans-serif;
   }
   .eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grafito)}
@@ -108,6 +108,7 @@
   @media(min-width:860px){
     .barra nav{display:flex}
     .barra nav a{text-decoration:none}
+    .barra nav a.activo{color:var(--arcilla)}
   }
 
   /* --- hero: carrusel de obra --- */
@@ -305,21 +306,22 @@
 
   /* --- quienes nos eligen: lista de texto (sin logos por ahora) --- */
   .clientes{background:var(--carbon)}
-  .clientes .eyebrow{color:var(--gris);text-align:center}
-  .clientes .tit{color:var(--gris-claro);text-align:center}
+  .clientes .eyebrow{color:var(--gris)}
+  .clientes .tit{color:var(--gris-claro)}
   /* muro de clientes: la referencia del brief (image4) pide logos; hasta que la clienta
-     comparta los archivos, van los wordmarks en la misma retícula */
+     comparta los archivos, van los wordmarks en la misma retícula, agrandados para que
+     ocupen el espacio en vez de verse sueltos */
   .clientes-lista{
-    display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:3rem;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:3.2rem;
     background:rgba(236,234,237,.09);border:1px solid rgba(236,234,237,.09);
   }
   @media(min-width:560px){.clientes-lista{grid-template-columns:repeat(3,1fr)}}
-  @media(min-width:920px){.clientes-lista{grid-template-columns:repeat(5,1fr)}}
+  @media(min-width:920px){.clientes-lista{grid-template-columns:repeat(4,1fr)}}
   .clientes-lista span{
     background:var(--carbon);display:flex;align-items:center;justify-content:center;
-    text-align:center;padding:1.4rem .7rem;min-height:86px;
+    text-align:center;padding:2.2rem 1.2rem;min-height:132px;
     font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.04em;
-    font-size:.82rem;line-height:1.25;color:var(--gris);opacity:.72;
+    font-size:1.08rem;line-height:1.3;color:var(--gris);opacity:.72;
     transition:opacity .3s,color .3s;
   }
   .clientes-lista span:hover{opacity:1;color:var(--gris-claro)}
@@ -413,17 +415,30 @@
   .cierre .tit{font-size:clamp(1.7rem,5.5vw,2.8rem)}
   .cierre .flecha{margin-top:1.8rem;font-size:.8rem}
 
-  /* --- footer --- */
-  footer{border-top:1px solid var(--linea);padding-block:3rem 2.5rem}
-  .footer__cols{display:grid;gap:2rem;grid-template-columns:repeat(2,1fr)}
-  @media(min-width:640px){.footer__cols{grid-template-columns:repeat(4,1fr)}}
-  .footer__cols h5{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grafito);margin-bottom:.9rem}
-  .footer__cols a{display:block;font-size:.86rem;text-decoration:none;margin-bottom:.55rem}
-  .footer__cols a:hover{color:var(--arcilla)}
-  .footer__logo{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--linea);
-    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-  .footer__logo img{height:30px;opacity:.85}
-  .footer__logo span{font-size:.74rem;color:var(--grafito)}
+  /* --- footer: CTA + WhatsApp, referencia columnanegra.com que aprobó la clienta --- */
+  footer{background:var(--carbon);color:var(--gris-claro);padding-block:4.6rem 2.2rem}
+  .footer__cta{text-align:center}
+  .footer__cta .tit{color:#fff}
+  .footer__cta .tit span{padding-left:0}
+  .footer__wa{
+    display:inline-flex;align-items:center;gap:.5em;margin-top:1.9rem;padding:.9rem 2.1rem;
+    border:1px solid rgba(236,234,237,.75);color:var(--gris-claro);
+    font-family:'Antonio',sans-serif;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+    text-decoration:none;transition:background .3s,color .3s,border-color .3s;
+  }
+  .footer__wa svg{width:.85em;height:.85em;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .footer__wa:hover{background:var(--naranja);border-color:var(--naranja);color:var(--carbon)}
+  .footer__wa:hover svg{transform:translate(.15em,-.15em)}
+  .footer__base{
+    margin-top:3.4rem;padding-top:2rem;border-top:1px solid rgba(236,234,237,.14);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.4rem;
+  }
+  .footer__marca{display:flex;align-items:center;gap:.9rem}
+  .footer__marca img{height:32px}
+  .footer__marca span{font-size:.76rem;color:var(--gris);max-width:26ch;line-height:1.4}
+  .footer__base-der{display:flex;align-items:center;gap:1.6rem;font-size:.76rem;color:var(--gris)}
+  .footer__base-der a{color:var(--gris-claro);text-decoration:none;transition:color .3s}
+  .footer__base-der a:hover{color:var(--naranja)}
 
   /* --- ficha de obra: modal con galería completa --- */
   /* ojo: no usar el prefijo .modal, ya lo ocupa la grilla de "modalidades" */
@@ -475,6 +490,7 @@
     font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.01em;
     font-size:1.7rem;color:var(--gris-claro);text-decoration:none;
   }
+  .menu-movil a.activo{color:var(--naranja)}
   @media(min-width:860px){.menu-movil{display:none}}
 
   .rv{opacity:0;transform:translateY(20px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1)}
@@ -497,12 +513,12 @@
     <img src="assets/marca/logo-marca.png" alt="Atelier 9.10">
     <div class="barra__acciones">
       <nav>
-        <a href="#inicio">Inicio</a>
-        <a href="#trayectoria">Equipo A9.10</a>
-        <a href="#obra">Proyectos</a>
-        <a href="#blog">Blog</a>
+        <a href="#inicio" data-panel="inicio">Inicio</a>
+        <a href="#trayectoria" data-panel="equipo">Equipo A9.10</a>
+        <a href="#obra" data-panel="proyectos">Proyectos</a>
+        <a href="#blog" data-panel="blog">Blog</a>
       </nav>
-      <a class="btn-contacto" href="#contacto">Contacto</a>
+      <a class="btn-contacto" href="#contacto" data-panel="contacto">Contacto</a>
     </div>
   </div>
 </div>
@@ -523,33 +539,34 @@
 </div>
 
 <nav class="menu-movil" id="menuMovil" aria-label="Menú principal">
-  <a href="#inicio">Inicio</a>
-  <a href="#trayectoria">Equipo A9.10</a>
-  <a href="#obra">Proyectos</a>
-  <a href="#blog">Blog</a>
-  <a href="#contacto">Contacto</a>
+  <a href="#inicio" data-panel="inicio">Inicio</a>
+  <a href="#trayectoria" data-panel="equipo">Equipo A9.10</a>
+  <a href="#obra" data-panel="proyectos">Proyectos</a>
+  <a href="#blog" data-panel="blog">Blog</a>
+  <a href="#contacto" data-panel="contacto">Contacto</a>
 </nav>
 
-<header class="hero" id="inicio">
-  <div class="hero__cap" id="heroCap">
-    <img src="assets/obra/french-essencs-plazavea-vista.jpg" alt="French Essenc's, local en Plaza Vea" class="viva">
-    <img src="assets/obra/casa-asqui-vista.jpg" alt="Casa Asqui, vista interior">
-    <img src="assets/obra/oficina-institucional-vista.jpg" alt="Oficina institucional, vista interior">
-    <img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada frente al mar">
-  </div>
-  <div class="wrap hero__in">
-    <p class="hero__eyebrow rv">Atelier 9.10 · Tacna, Perú</p>
-    <h1 class="tit rv"><span>Identidad. Atemporal.</span><span>Elegancia.</span></h1>
-    <p class="rv">Diseñamos arquitectura, interiores y mobiliario donde la proporción, la luz natural y la materialidad pura se convierten en experiencia.</p>
-    <a class="hero__cta rv" href="#obra">Ver proyectos</a>
-  </div>
-  <div class="hero__nav">
-    <button id="heroPrev" aria-label="Obra anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg></button>
-    <button id="heroNext" aria-label="Obra siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg></button>
-  </div>
-</header>
-
 <main>
+  <div class="panel" id="panel-inicio" data-panel="inicio">
+  <header class="hero">
+    <div class="hero__cap" id="heroCap">
+      <img src="assets/obra/french-essencs-plazavea-vista.jpg" alt="French Essenc's, local en Plaza Vea" class="viva">
+      <img src="assets/obra/casa-asqui-vista.jpg" alt="Casa Asqui, vista interior">
+      <img src="assets/obra/oficina-institucional-vista.jpg" alt="Oficina institucional, vista interior">
+      <img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada frente al mar">
+    </div>
+    <div class="wrap hero__in">
+      <p class="hero__eyebrow rv">Atelier 9.10 · Tacna, Perú</p>
+      <h1 class="tit rv"><span>Identidad +</span><span>Atemporal + Elegancia</span></h1>
+      <p class="rv">Diseñamos arquitectura, interiores y mobiliario donde la proporción, la luz natural y la materialidad pura se convierten en experiencia.</p>
+      <a class="hero__cta rv" href="#obra" data-panel="proyectos">Ver proyectos</a>
+    </div>
+    <div class="hero__nav">
+      <button id="heroPrev" aria-label="Obra anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button id="heroNext" aria-label="Obra siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </header>
+
   <section class="servicios" id="disciplinas">
     <div class="wrap">
       <p class="eyebrow rv">Lo que hacemos</p>
@@ -616,7 +633,7 @@
       </div>
       <div class="rv">
         <p>Cinco proyectos que resumen nuestro rango: de la vivienda a la puesta en valor patrimonial, ejecutados de principio a fin.</p>
-        <a class="flecha" href="#obra" style="margin-top:1.3rem">Ver toda la obra <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        <a class="flecha" href="#obra" data-panel="proyectos" style="margin-top:1.3rem">Ver toda la obra <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </div>
     </div>
 
@@ -667,7 +684,7 @@
   <section class="con-linea clientes" id="clientes">
     <div class="wrap">
       <p class="eyebrow rv">Algunos de</p>
-      <h2 class="tit rv" style="margin-top:.6rem;text-align:center"><span style="padding-left:0">Quienes nos</span><span style="padding-left:0">eligen</span></h2>
+      <h2 class="tit rv" style="margin-top:.6rem"><span>Quienes nos</span><span>eligen</span></h2>
       <div class="clientes-lista rv">
         <span>Home Ideas</span><span>One Marie</span><span>RollaLux</span><span>French Essenc's</span>
         <span>Decorela</span><span>ALPO</span><span>Joyería Catalina</span><span>Joyería Centro Suizo</span>
@@ -678,7 +695,9 @@
       </div>
     </div>
   </section>
+  </div>
 
+  <div class="panel" id="panel-equipo" data-panel="equipo" hidden>
   <section id="trayectoria">
     <div class="wrap dos-col">
       <div>
@@ -687,7 +706,7 @@
       </div>
       <div class="rv">
         <p>Atelier 9.10 es un estudio de arquitectura y diseño de interiores de alta gama. Con raíces en Tacna, hemos trascendido fronteras para llevar nuestra visión a un escenario nacional e internacional. Nos alejamos de lo genérico para diseñar atmósferas atemporales que reconectan al ser humano con su estado más orgánico. Nuestra firma se caracteriza por esculpir espacios que generan sensaciones reconfortantes a través de un dominio absoluto de las proporciones, la luz natural, la materialidad pura y la integración sutil de la vegetación.</p>
-        <a class="flecha" href="#obra" style="margin-top:1.3rem">Sobre el estudio <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        <a class="flecha" href="#obra" data-panel="proyectos" style="margin-top:1.3rem">Sobre el estudio <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </div>
     </div>
     <div class="wrap par-asim rv">
@@ -764,7 +783,9 @@
       </div>
     </div>
   </section>
+  </div>
 
+  <div class="panel" id="panel-proyectos" data-panel="proyectos" hidden>
   <section class="con-linea" id="obra">
     <div class="wrap">
       <p class="eyebrow rv">Portafolio</p>
@@ -782,7 +803,9 @@
       <div class="grilla" id="grilla"></div>
     </div>
   </section>
+  </div>
 
+  <div class="panel" id="panel-contacto" data-panel="contacto" hidden>
   <section class="con-linea cierre" id="contacto">
     <div class="wrap">
       <p class="eyebrow rv" style="font-size:.82rem;letter-spacing:.08em">
@@ -824,7 +847,9 @@
       </div>
     </div>
   </section>
+  </div>
 
+  <div class="panel" id="panel-blog" data-panel="blog" hidden>
   <section class="con-linea" id="blog">
     <div class="wrap">
       <p class="eyebrow rv">Blog</p>
@@ -832,39 +857,21 @@
       <div class="blog rv" id="blogLista"></div>
     </div>
   </section>
+  </div>
 </main>
 
 <footer>
-  <div class="wrap">
-    <div class="footer__cols">
-      <div>
-        <h5>Estudio</h5>
-        <a href="#trayectoria">Nosotros</a>
-        <a href="#disciplinas">Servicios</a>
-        <a href="#obra">Proyectos</a>
-        <a href="#equipo">Equipo</a>
-      </div>
-      <div>
-        <h5>Comunidad</h5>
-        <a href="#destacados">Espacios con historia</a>
-        <a href="#clientes">Quienes nos eligen</a>
-        <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Blog</a>
-      </div>
-      <div>
-        <h5>Contacto</h5>
-        <a href="tel:+51976627928">+51 976 627 928</a>
-        <a href="tel:+51991157053">+51 991 157 053</a>
-        <a href="mailto:contacto@atelier910.com">contacto@atelier910.com</a>
-      </div>
-      <div>
-        <h5>Encuéntranos</h5>
-        <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://atelier910.com" target="_blank" rel="noopener">atelier910.com</a>
-        <a href="https://wa.me/51976627928" target="_blank" rel="noopener">WhatsApp</a>
-      </div>
+  <div class="wrap footer__cta">
+    <h2 class="tit rv" style="margin-top:.6rem"><span>Conversemos sobre</span><span>tu próximo proyecto</span></h2>
+    <a class="footer__wa rv" href="https://wa.me/51976627928" target="_blank" rel="noopener">Escribir por WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+  </div>
+  <div class="wrap footer__base">
+    <div class="footer__marca">
+      <img src="assets/marca/logo-marca.png" alt="Atelier 9.10">
+      <span>Atelier 9.10 — Arquitectura &amp; Diseño de Interiores</span>
     </div>
-    <div class="footer__logo">
-      <img src="assets/marca/logo-completo.png" alt="Atelier 9.10">
+    <div class="footer__base-der">
+      <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Instagram</a>
       <span>© Atelier 9.10 — Tacna, Perú</span>
     </div>
   </div>
@@ -893,6 +900,32 @@
   });
   menuMovil.querySelectorAll('a').forEach((a) => a.addEventListener('click', cerrarMenu));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarMenu(); });
+
+  // Pestañas: la clienta pidió que el sitio sea por pestañas de verdad, no todo en una
+  // sola página con scroll. Cada <a data-panel="..."> (nav desktop, menú móvil, y los
+  // links internos tipo "Ver toda la obra") muestra su .panel y oculta el resto.
+  const panels = [...document.querySelectorAll('.panel')];
+  const navLinks = [...document.querySelectorAll('a[data-panel]')];
+  const mostrarPanel = (nombre, { empujarHash = true } = {}) => {
+    if (!panels.some((p) => p.dataset.panel === nombre)) nombre = 'inicio';
+    panels.forEach((p) => { p.hidden = p.dataset.panel !== nombre; });
+    navLinks.forEach((a) => a.classList.toggle('activo', a.dataset.panel === nombre));
+    window.scrollTo(0, 0);
+    // El .rv/IntersectionObserver de más abajo anima el contenido a medida que se
+    // scrollea; mientras el panel estaba `hidden` nunca llegó a intersecar, así que
+    // sin esto el contenido de la primera pantalla de cada pestaña queda invisible.
+    const activo = panels.find((p) => p.dataset.panel === nombre);
+    activo.querySelectorAll('.rv:not(.on)').forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('on');
+    });
+    if (empujarHash && location.hash.slice(1) !== nombre) history.replaceState(null, '', '#' + nombre);
+  };
+  navLinks.forEach((a) => {
+    a.addEventListener('click', (e) => { e.preventDefault(); mostrarPanel(a.dataset.panel); });
+  });
+  window.addEventListener('hashchange', () => mostrarPanel(location.hash.slice(1)));
+  mostrarPanel(location.hash.slice(1) || 'inicio', { empujarHash: false });
 
   // Carrusel del hero
   const imgs = [...document.querySelectorAll('#heroCap img')];
