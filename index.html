@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier 9.10 — Arquitectura y diseño de interiores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Allura&family=Barlow+Condensed:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* identidad definitiva del cliente (brief 2026-09-07), aplicar tal cual */
+    --naranja:#FFBA65;
+    --carbon:#262625;
+    --gris:#BABABA;
+    --gris-claro:#ECEAED;
+    --azul-marino:#1A315A;
+
+    --crema:var(--gris-claro);
+    --panel:#FFFFFF;
+    --tinta:var(--carbon);
+    /* gris literal (#BABABA) es muy claro para texto sobre --crema (~1.5:1); este tono
+       conserva la familia pero pasa AA (~4.8:1) */
+    --grafito:#6B6B69;
+    --linea:rgba(38,38,37,.14);
+    /* naranja puro tiene bajo contraste sobre fondos claros (~1.4:1); el azul marino
+       cubre los usos de acento que son texto/ícono (números, svg, foco, bordes activos) */
+    --arcilla:var(--azul-marino);
+    --gutter:clamp(1.25rem,5vw,3rem);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  /* Swis721 LtCn BT (cuerpo de texto en el brief) es una fuente paga, no disponible en
+     Google Fonts; Barlow Condensed es la alternativa libre más cercana en proporción
+     condensada y peso light. Tamaño base subido a 16px porque una condensada se lee
+     más chica que una grotesca regular al mismo tamaño. */
+  body{
+    background:var(--crema);color:var(--tinta);
+    font-family:'Barlow Condensed',system-ui,sans-serif;font-weight:300;
+    font-size:16px;line-height:1.65;overflow-x:hidden;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  ::selection{background:var(--tinta);color:var(--crema)}
+  :focus-visible{outline:2px solid var(--arcilla);outline-offset:3px}
+  .wrap{max-width:1180px;margin-inline:auto;padding-inline:var(--gutter)}
+
+  /* --- vocabulario compartido --- */
+  /* Antonio (titular/label) cubre el rol de "ANTONIO" del brief; Allura (más abajo)
+     el de "Allura". Swis721 LtCn BT queda cubierto por Barlow Condensed en el body. */
+  h1,h2,h3,h4,.tit,.eyebrow,.barra nav a,.filtro button,.flecha,.footer__cols h5{
+    font-family:'Antonio',sans-serif;
+  }
+  .eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grafito)}
+  .linea{border:none;border-top:1px solid var(--linea)}
+
+  /* titular de firma: segunda línea indentada a la derecha */
+  .tit{font-weight:500;letter-spacing:-.01em;text-transform:uppercase;line-height:1.14}
+  .tit span{display:block}
+  .tit span:nth-child(2){padding-left:1.4em}
+
+  /* acento script (Allura) reservado para la frase de marca */
+  .promesa{
+    font-family:'Allura',cursive;font-weight:400;text-transform:none;letter-spacing:0;
+    font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.3;color:var(--azul-marino);
+  }
+
+  .flecha{
+    display:inline-flex;align-items:center;gap:.4em;
+    font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    text-decoration:none;color:var(--tinta);
+    padding-bottom:.3em;border-bottom:1px solid var(--tinta);
+  }
+  .flecha svg{width:.85em;height:.85em;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .flecha:hover svg{transform:translate(.15em,-.15em)}
+
+  .meta-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:1.4rem 1.5rem;
+    padding-top:1.4rem;margin-top:1.4rem;border-top:1px solid var(--linea);
+  }
+  .meta-grid dt{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--grafito);margin-bottom:.35rem}
+  .meta-grid dd{font-size:.88rem}
+
+  /* --- barra --- */
+  .barra{
+    position:sticky;top:0;z-index:50;background:var(--crema);
+    border-bottom:1px solid var(--linea);
+  }
+  .barra__in{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-block:.85rem;
+  }
+  .barra img{height:38px;width:auto}
+  .barra__acciones{display:flex;align-items:center;gap:1.1rem}
+  .icono-btn{
+    background:none;border:none;cursor:pointer;padding:.3rem;
+    display:flex;color:var(--tinta);
+  }
+  .btn-contacto{
+    background:var(--carbon);color:var(--gris-claro);
+    padding:.72rem 1.35rem;font-family:'Antonio',sans-serif;
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
+    transition:background .3s;
+  }
+  .btn-contacto:hover{background:var(--azul-marino)}
+  @media(max-width:859px){.btn-contacto{display:none}}
+  .barra nav{display:none;gap:2rem;font-size:.78rem;letter-spacing:.06em}
+  @media(min-width:860px){
+    .barra nav{display:flex}
+    .barra nav a{text-decoration:none}
+  }
+
+  /* --- hero: carrusel de obra --- */
+  .hero{position:relative;height:78svh;min-height:460px;overflow:hidden}
+  .hero__cap{position:absolute;inset:0}
+  .hero__cap img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    opacity:0;transition:opacity 1.1s ease;
+  }
+  .hero__cap img.viva{opacity:1}
+  .hero__cap::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(38,38,37,.72) 0%,rgba(38,38,37,.15) 46%,rgba(38,38,37,.35) 100%);
+  }
+  /* referencia del brief (image1/image5): bloque centrado + CTA contorneado */
+  .hero__in{
+    position:relative;z-index:1;height:100%;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;color:#ECEAED;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  .hero__eyebrow{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;opacity:.85;margin-bottom:1.1rem}
+  .hero h1{font-size:clamp(1.9rem,7vw,2.9rem)}
+  .hero h1 span:nth-child(2){padding-left:0}
+  .hero p{margin:1.1rem auto 0;max-width:48ch;font-size:.92rem;opacity:.92;line-height:1.7}
+  .hero__cta{
+    display:inline-block;margin-top:2rem;padding:.85rem 2rem;
+    border:1px solid rgba(236,234,237,.75);color:#ECEAED;
+    font-family:'Antonio',sans-serif;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;
+    transition:background .35s,border-color .35s,color .35s;
+  }
+  .hero__cta:hover{background:#ECEAED;border-color:#ECEAED;color:var(--carbon)}
+  .hero__nav{
+    position:absolute;right:var(--gutter);bottom:1.6rem;z-index:2;display:flex;gap:.6rem;
+  }
+  .hero__nav button{
+    width:2.1rem;height:2.1rem;border-radius:50%;border:1px solid rgba(236,234,237,.5);
+    background:transparent;color:#ECEAED;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .3s,border-color .3s;
+  }
+  .hero__nav button:hover{background:rgba(236,234,237,.15);border-color:#ECEAED}
+  .hero__nav svg{width:1rem;height:1rem}
+
+  /* --- secciones genéricas --- */
+  section{padding-block:clamp(3.5rem,9vh,5.5rem)}
+  section.con-linea{border-top:1px solid var(--linea)}
+
+  .dos-col{display:grid;gap:2rem}
+  @media(min-width:860px){.dos-col{grid-template-columns:1fr 1fr;gap:4rem;align-items:start}}
+  .dos-col p{color:var(--grafito);font-size:.94rem;max-width:44ch;margin-top:1rem}
+
+  .par-asim{display:grid;gap:1rem;margin-top:2.2rem}
+  @media(min-width:640px){
+    .par-asim{grid-template-columns:1fr 1.15fr;align-items:end;gap:1.25rem}
+    .par-asim .im-b{margin-bottom:1.6rem}
+  }
+  .par-asim img{width:100%;object-fit:cover}
+  .par-asim .im-a img{aspect-ratio:3/4}
+  .par-asim .im-b img{aspect-ratio:4/5}
+
+  /* --- espacios con historia (5 destacados, uno por categoría) --- */
+  .destacados{display:grid;gap:2.2rem;margin-top:2.4rem}
+  @media(min-width:640px){.destacados{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:960px){.destacados{grid-template-columns:repeat(3,1fr);gap:2rem}}
+  .destacado{position:relative;overflow:hidden;cursor:pointer;background:var(--carbon)}
+  .destacado .ph{aspect-ratio:16/11}
+  /* el rotulo ya va en el overlay: el placeholder queda solo con la marca de agua */
+  .destacado .ph span{display:none}
+  .destacado__im img{
+    width:100%;aspect-ratio:16/11;object-fit:cover;display:block;
+    transition:transform .7s cubic-bezier(.2,.7,.2,1);
+  }
+  .destacado:hover .destacado__im img,.destacado:focus-visible .destacado__im img{transform:scale(1.05)}
+  .destacado::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,0) 58%);
+  }
+  .destacado__ov{position:absolute;inset:auto 0 0 0;z-index:1;padding:1.2rem 1.2rem 1.25rem;color:#fff}
+  .destacado__ov .eyebrow{color:var(--naranja);opacity:.95}
+  .destacado__ov h3{
+    font-family:'Antonio',sans-serif;font-size:1.08rem;font-weight:500;
+    text-transform:uppercase;letter-spacing:.01em;margin-top:.3rem;
+  }
+  .destacado__vm{
+    display:inline-flex;align-items:center;gap:.4rem;margin-top:.6rem;
+    font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;
+    border-bottom:1px solid rgba(255,255,255,.55);padding-bottom:.15rem;
+    transition:border-color .3s;
+  }
+  .destacado:hover .destacado__vm{border-color:#fff}
+  .destacado__vm svg{width:.85rem;height:.85rem}
+  .destacado:focus-visible{outline:2px solid var(--naranja);outline-offset:3px}
+
+
+  /* --- servicios: banda de 6 fichas fotograficas (referencia image2 del brief) --- */
+  .servicios{background:var(--carbon);padding-block:4.6rem 0;overflow:hidden}
+  .servicios .eyebrow{color:var(--gris);text-align:center;display:block}
+  .servicios__tit{
+    font-family:'Antonio',sans-serif;text-align:center;color:#fff;margin-top:.55rem;
+    font-size:clamp(2rem,6vw,3.2rem);text-transform:uppercase;letter-spacing:.02em;line-height:1;
+  }
+  .servicios__rule{display:block;width:54px;height:1px;background:var(--gris);opacity:.55;margin:1.15rem auto 0}
+  .servicios__band{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:3.2rem}
+  @media(min-width:700px){.servicios__band{grid-template-columns:repeat(3,1fr)}}
+  @media(min-width:1080px){.servicios__band{grid-template-columns:repeat(6,1fr)}}
+  .serv{position:relative;overflow:hidden;aspect-ratio:3/4;background:var(--carbon)}
+  .serv__im{position:absolute;inset:0;overflow:hidden}
+  .serv img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    filter:brightness(.6) saturate(.92);
+    transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s;
+  }
+  .serv:hover img,.serv:focus-within img{transform:scale(1.06);filter:brightness(.42) saturate(.92)}
+  .serv--sf .serv__im{background:linear-gradient(135deg,var(--carbon),var(--azul-marino))}
+  .serv--sf .serv__im::before{
+    content:"";position:absolute;inset:0;margin:auto;width:38%;aspect-ratio:1;
+    background:url(assets/marca/logo-marca.png) center/contain no-repeat;opacity:.13;
+  }
+  .serv__im::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to top,rgba(0,0,0,.86),rgba(0,0,0,.06) 64%);
+  }
+  .serv__txt{position:absolute;inset:auto 0 0 0;padding:1.1rem 1rem 1.25rem;z-index:1}
+  .serv__n{
+    font-family:'Antonio',sans-serif;font-size:.7rem;color:var(--naranja);
+    letter-spacing:.14em;display:block;
+  }
+  .serv__txt h4{
+    font-family:'Antonio',sans-serif;font-size:.9rem;text-transform:uppercase;
+    letter-spacing:.02em;color:#fff;margin-top:.3rem;line-height:1.15;font-weight:500;
+  }
+  .serv__txt p{
+    font-size:.76rem;line-height:1.45;color:var(--gris-claro);margin-top:0;
+    opacity:0;max-height:0;overflow:hidden;
+    transition:opacity .45s ease,max-height .45s ease,margin-top .45s ease;
+  }
+  .serv:hover .serv__txt p,.serv:focus-within .serv__txt p{opacity:.85;max-height:12rem;margin-top:.55rem}
+  /* sin hover (tactil): la ficha crece y el texto va debajo de la foto, nunca recortado */
+  @media(hover:none){
+    .serv{aspect-ratio:auto;display:flex;flex-direction:column}
+    .serv__im{position:relative;inset:auto;aspect-ratio:4/5;flex:none}
+    .serv__txt{position:static;padding:.95rem 1rem 1.4rem}
+    .serv__txt p{opacity:.85;max-height:none;margin-top:.5rem}
+  }
+
+
+
+  /* --- contacto: datos encima del formulario (referencia image7/image8 del brief) --- */
+  .contacto-cols{display:grid;gap:2.6rem;margin-top:2.2rem}
+  @media(min-width:860px){.contacto-cols{grid-template-columns:1fr 1.05fr;gap:4rem;align-items:start}}
+  /* .cierre centra su contenido; el formulario y su columna van alineados a la izquierda */
+  .contacto-cols{text-align:left}
+  .form{display:grid;gap:1.1rem}
+  .form__fila{display:grid;gap:1.1rem}
+  @media(min-width:520px){.form__fila{grid-template-columns:1fr 1fr}}
+  .form label{
+    display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--grafito);margin-bottom:.45rem;
+  }
+  .form input,.form textarea{
+    width:100%;font-family:inherit;font-size:.92rem;color:var(--tinta);
+    background:var(--panel);border:1px solid var(--linea);border-radius:0;
+    padding:.8rem .9rem;transition:border-color .3s;
+  }
+  .form textarea{resize:vertical;min-height:8rem}
+  .form input:focus,.form textarea:focus{outline:none;border-color:var(--carbon)}
+  .form input:user-invalid,.form textarea:user-invalid{border-color:#a5402f}
+  .form__enviar{
+    justify-self:start;background:var(--carbon);color:var(--gris-claro);border:1px solid var(--carbon);
+    padding:.85rem 2.2rem;cursor:pointer;font-family:'Antonio',sans-serif;
+    font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;
+    transition:background .3s,color .3s;
+  }
+  .form__enviar:hover{background:var(--azul-marino);border-color:var(--azul-marino)}
+  .form__nota{font-size:.76rem;color:var(--grafito);line-height:1.6}
+
+  /* --- blog: listado de articulos (referencia image9 del brief) --- */
+  .blog{margin-top:2.4rem;border-top:1px solid var(--linea)}
+  .blog__item{
+    display:grid;grid-template-columns:1fr;gap:1rem;
+    padding:1.9rem 0;border-bottom:1px solid var(--linea);
+  }
+  @media(min-width:700px){
+    .blog__item{grid-template-columns:270px 1fr;gap:2rem;align-items:start}
+  }
+  .blog__item img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+  .blog__item h4{font-size:1.14rem;font-weight:500;line-height:1.25;letter-spacing:-.005em}
+  .blog__meta{
+    font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--grafito);margin-top:.55rem;
+  }
+  .blog__item p{color:var(--grafito);font-size:.9rem;margin-top:.7rem;max-width:62ch;line-height:1.65}
+  .blog__vacio{padding:2.6rem 0 .5rem;border-bottom:1px solid var(--linea)}
+  .blog__vacio p{color:var(--grafito);font-size:.94rem;max-width:52ch}
+
+  /* --- quienes nos eligen: lista de texto (sin logos por ahora) --- */
+  .clientes{background:var(--carbon)}
+  .clientes .eyebrow{color:var(--gris);text-align:center}
+  .clientes .tit{color:var(--gris-claro);text-align:center}
+  /* muro de clientes: la referencia del brief (image4) pide logos; hasta que la clienta
+     comparta los archivos, van los wordmarks en la misma retícula */
+  .clientes-lista{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:3rem;
+    background:rgba(236,234,237,.09);border:1px solid rgba(236,234,237,.09);
+  }
+  @media(min-width:560px){.clientes-lista{grid-template-columns:repeat(3,1fr)}}
+  @media(min-width:920px){.clientes-lista{grid-template-columns:repeat(5,1fr)}}
+  .clientes-lista span{
+    background:var(--carbon);display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:1.4rem .7rem;min-height:86px;
+    font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.04em;
+    font-size:.82rem;line-height:1.25;color:var(--gris);opacity:.72;
+    transition:opacity .3s,color .3s;
+  }
+  .clientes-lista span:hover{opacity:1;color:var(--gris-claro)}
+
+  /* --- equipo a9.10 --- */
+  .equipo{display:grid;gap:2rem;margin-top:2.2rem}
+  @media(min-width:640px){.equipo{grid-template-columns:repeat(3,1fr)}}
+  .equipo__card h4{font-size:1rem;font-weight:500}
+  .equipo__card p{color:var(--grafito);font-size:.86rem;margin-top:.3rem}
+
+  /* --- visión/propósito --- */
+  .vp{display:grid;gap:2.2rem;margin-top:2rem}
+  @media(min-width:760px){.vp{grid-template-columns:1fr 1fr;gap:3rem}}
+  .vp article p{margin-top:.7rem;color:var(--grafito);font-size:.92rem;max-width:42ch}
+
+  /* --- cómo lo hacemos --- */
+  .metodo{display:grid;gap:0;margin-top:2rem}
+  .metodo__fila{
+    display:grid;gap:.3rem 2rem;padding-block:1.5rem;border-top:1px solid var(--linea);
+    grid-template-columns:1fr;
+  }
+  .metodo__fila:last-child{border-bottom:1px solid var(--linea)}
+  @media(min-width:760px){.metodo__fila{grid-template-columns:minmax(0,20ch) 1fr}}
+  .metodo__fila h4{font-size:1rem;font-weight:500}
+  .metodo__fila p{color:var(--grafito);font-size:.9rem;max-width:52ch}
+
+
+  /* --- portafolio: filtro + grilla --- */
+  .filtro{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:1.8rem;margin-bottom:2.6rem}
+  .filtro button{
+    background:transparent;border:1px solid var(--linea);border-radius:999px;
+    cursor:pointer;padding:.55rem 1.15rem;
+    font-family:'Antonio',sans-serif;font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--grafito);transition:background .3s,color .3s,border-color .3s;
+  }
+  .filtro button:hover{color:var(--tinta);border-color:var(--grafito)}
+  .filtro button.activo{background:var(--carbon);border-color:var(--carbon);color:var(--gris-claro)}
+
+  .grilla{display:grid;gap:2.5rem}
+  @media(min-width:760px){.grilla{grid-template-columns:1fr 1fr;gap:2.5rem 2rem}}
+  .obra-card{display:none}
+  .obra-card.mostrar{display:block;animation:fade .5s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .obra-card__im{overflow:hidden;background:var(--panel)}
+  .obra-card__im img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .8s cubic-bezier(.22,1,.36,1)}
+  .obra-card:hover .obra-card__im img{transform:scale(1.04)}
+
+  /* placeholder de marca: obras del Anexo sin foto disponible en ningún PDF fuente */
+  .ph{
+    aspect-ratio:4/3;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,var(--carbon),var(--azul-marino));
+    display:flex;align-items:center;justify-content:center;padding:1.2rem;
+  }
+  .ph::before{
+    content:"";position:absolute;inset:0;margin:auto;width:42%;aspect-ratio:1;
+    background:url(assets/marca/logo-marca.png) center/contain no-repeat;opacity:.14;
+  }
+  .ph span{
+    position:relative;color:var(--gris-claro);font-family:'Antonio',sans-serif;
+    text-transform:uppercase;letter-spacing:.03em;text-align:center;font-size:1.05rem;
+  }
+  .obra-card__cab{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-top:1rem}
+  .obra-card__cab h4{font-size:1.02rem;font-weight:500;text-transform:uppercase;letter-spacing:-.005em}
+  .obra-card__fila{
+    display:flex;flex-wrap:wrap;gap:.3rem 1.6rem;margin-top:.6rem;
+    font-size:.72rem;color:var(--grafito);text-transform:uppercase;letter-spacing:.04em;
+  }
+  .obra-card__fila b{color:var(--tinta);font-weight:400;display:block;font-size:.85rem;text-transform:none;letter-spacing:0;margin-top:.15rem}
+
+  /* --- modalidades --- */
+  .modal{display:grid;gap:1.6rem;margin-top:2.2rem}
+  @media(min-width:760px){.modal{grid-template-columns:repeat(3,1fr)}}
+  .modal__card{padding:1.7rem;border:1px solid var(--linea)}
+  .modal__card svg{width:1.5rem;height:1.5rem;color:var(--arcilla);margin-bottom:1.2rem}
+  .modal__card h4{font-size:.98rem;font-weight:500;margin-bottom:.6rem}
+  .modal__card p{color:var(--grafito);font-size:.86rem}
+
+  /* --- proceso --- */
+  .proceso{margin-top:2rem}
+  .paso{
+    display:grid;grid-template-columns:2.4rem 1fr;gap:1rem 1.5rem;
+    padding-block:1.5rem;border-top:1px solid var(--linea);
+  }
+  .proceso .paso:last-child{border-bottom:1px solid var(--linea)}
+  .paso__n{font-size:.78rem;color:var(--arcilla);padding-top:.2rem}
+  .paso h4{font-size:.98rem;font-weight:500;margin-bottom:.4rem}
+  .paso p{color:var(--grafito);font-size:.88rem;max-width:52ch}
+
+  /* --- cierre --- */
+  .cierre{text-align:center}
+  .cierre .tit{font-size:clamp(1.7rem,5.5vw,2.8rem)}
+  .cierre .flecha{margin-top:1.8rem;font-size:.8rem}
+
+  /* --- footer --- */
+  footer{border-top:1px solid var(--linea);padding-block:3rem 2.5rem}
+  .footer__cols{display:grid;gap:2rem;grid-template-columns:repeat(2,1fr)}
+  @media(min-width:640px){.footer__cols{grid-template-columns:repeat(4,1fr)}}
+  .footer__cols h5{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grafito);margin-bottom:.9rem}
+  .footer__cols a{display:block;font-size:.86rem;text-decoration:none;margin-bottom:.55rem}
+  .footer__cols a:hover{color:var(--arcilla)}
+  .footer__logo{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--linea);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+  .footer__logo img{height:30px;opacity:.85}
+  .footer__logo span{font-size:.74rem;color:var(--grafito)}
+
+  /* --- ficha de obra: modal con galería completa --- */
+  /* ojo: no usar el prefijo .modal, ya lo ocupa la grilla de "modalidades" */
+  .ficha{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center}
+  .ficha[hidden]{display:none}
+  .ficha__fondo{position:absolute;inset:0;background:rgba(38,38,37,.82);cursor:pointer}
+  .ficha__panel{
+    position:relative;background:var(--crema);color:var(--tinta);
+    width:min(1000px,calc(100vw - 2rem));max-height:calc(100vh - 2rem);
+    overflow-y:auto;padding:clamp(1.5rem,4vw,2.6rem);
+  }
+  .ficha__x{
+    position:sticky;top:0;margin-left:auto;display:flex;
+    background:var(--crema);border:none;cursor:pointer;color:var(--tinta);padding:.3rem;
+  }
+  .ficha__cab h3{font-size:clamp(1.4rem,4vw,2rem);font-weight:500;text-transform:uppercase;margin-top:.4rem}
+  .ficha__meta{
+    display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;margin-top:.9rem;
+    padding-top:.9rem;border-top:1px solid var(--linea);
+    font-size:.8rem;color:var(--grafito);text-transform:uppercase;letter-spacing:.06em;
+  }
+  .ficha__galeria{display:grid;gap:.9rem;margin-top:1.6rem}
+  @media(min-width:700px){
+    .ficha__galeria{grid-template-columns:repeat(2,1fr)}
+    .ficha__galeria img:first-child:not(:only-child){grid-column:1/-1}
+  }
+  .ficha__galeria img{width:100%;object-fit:cover;aspect-ratio:4/3;background:var(--panel)}
+  .ficha__galeria img:first-child:not(:only-child){aspect-ratio:16/9}
+  .ficha__sinfoto{margin-top:1.6rem}
+  .ficha__sinfoto p{margin-top:.9rem;font-size:.86rem;color:var(--grafito)}
+  body.ficha-abierta{overflow:hidden}
+  .obra-card{cursor:pointer}
+
+  /* --- menú mobile (el botón hamburguesa no tenía funcionalidad) --- */
+  @media(min-width:860px){.btn-menu{display:none}}
+  .btn-menu .i-cerrar{display:none}
+  .btn-menu.abierto .i-abrir{display:none}
+  .btn-menu.abierto .i-cerrar{display:flex}
+  body.menu-abierto{overflow:hidden}
+  .menu-movil{
+    position:fixed;inset:0;z-index:40;background:var(--carbon);
+    display:flex;flex-direction:column;justify-content:center;gap:1.5rem;
+    padding:2rem var(--gutter);
+    transform:translateY(-100%);transition:transform .4s cubic-bezier(.22,1,.36,1);
+    visibility:hidden;
+  }
+  .menu-movil.abierto{transform:translateY(0);visibility:visible}
+  .menu-movil a{
+    font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.01em;
+    font-size:1.7rem;color:var(--gris-claro);text-decoration:none;
+  }
+  @media(min-width:860px){.menu-movil{display:none}}
+
+  .rv{opacity:0;transform:translateY(20px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+  .rv.on{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .rv{opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="barra">
+  <div class="wrap barra__in">
+    <button class="icono-btn btn-menu" id="btnMenu" aria-label="Abrir menú" aria-expanded="false" aria-controls="menuMovil">
+      <svg class="i-abrir" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg class="i-cerrar" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <img src="assets/marca/logo-marca.png" alt="Atelier 9.10">
+    <div class="barra__acciones">
+      <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#trayectoria">Equipo A9.10</a>
+        <a href="#obra">Proyectos</a>
+        <a href="#blog">Blog</a>
+      </nav>
+      <a class="btn-contacto" href="#contacto">Contacto</a>
+    </div>
+  </div>
+</div>
+
+<div class="ficha" id="ficha" hidden>
+  <div class="ficha__fondo" data-cerrar></div>
+  <div class="ficha__panel" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo">
+    <button class="ficha__x" id="fichaX" aria-label="Cerrar ficha">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="ficha__cab">
+      <p class="eyebrow" id="fichaCat"></p>
+      <h3 id="fichaTitulo"></h3>
+      <div class="ficha__meta" id="fichaMeta"></div>
+    </div>
+    <div id="fichaCuerpo"></div>
+  </div>
+</div>
+
+<nav class="menu-movil" id="menuMovil" aria-label="Menú principal">
+  <a href="#inicio">Inicio</a>
+  <a href="#trayectoria">Equipo A9.10</a>
+  <a href="#obra">Proyectos</a>
+  <a href="#blog">Blog</a>
+  <a href="#contacto">Contacto</a>
+</nav>
+
+<header class="hero" id="inicio">
+  <div class="hero__cap" id="heroCap">
+    <img src="assets/obra/french-essencs-plazavea-vista.jpg" alt="French Essenc's, local en Plaza Vea" class="viva">
+    <img src="assets/obra/casa-asqui-vista.jpg" alt="Casa Asqui, vista interior">
+    <img src="assets/obra/oficina-institucional-vista.jpg" alt="Oficina institucional, vista interior">
+    <img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada frente al mar">
+  </div>
+  <div class="wrap hero__in">
+    <p class="hero__eyebrow rv">Atelier 9.10 · Tacna, Perú</p>
+    <h1 class="tit rv"><span>Identidad. Atemporal.</span><span>Elegancia.</span></h1>
+    <p class="rv">Diseñamos arquitectura, interiores y mobiliario donde la proporción, la luz natural y la materialidad pura se convierten en experiencia.</p>
+    <a class="hero__cta rv" href="#obra">Ver proyectos</a>
+  </div>
+  <div class="hero__nav">
+    <button id="heroPrev" aria-label="Obra anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <button id="heroNext" aria-label="Obra siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg></button>
+  </div>
+</header>
+
+<main>
+  <section class="servicios" id="disciplinas">
+    <div class="wrap">
+      <p class="eyebrow rv">Lo que hacemos</p>
+      <h2 class="servicios__tit rv">Servicios</h2>
+      <span class="servicios__rule rv"></span>
+    </div>
+    <div class="servicios__band">
+        <article class="serv rv" tabindex="0">
+          <div class="serv__im"><img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada" loading="lazy"></div>
+          <div class="serv__txt">
+            <span class="serv__n">01</span>
+            <h4>Arquitectura de autor</h4>
+            <p>Diseño volumétrico y espacial desde su concepción hasta la planimetría técnica, priorizando la fluidez y la luz natural.</p>
+          </div>
+        </article>
+        <article class="serv rv" tabindex="0">
+          <div class="serv__im"><img src="assets/obra/casa-laura-patio.jpg" alt="Casa Laura, patio interior" loading="lazy"></div>
+          <div class="serv__txt">
+            <span class="serv__n">02</span>
+            <h4>Diseño de interiores y atmósferas</h4>
+            <p>Intervención estética y funcional de espacios, seleccionando texturas, iluminación y acabados de alta gama.</p>
+          </div>
+        </article>
+        <article class="serv rv serv--sf" tabindex="0">
+          <div class="serv__im"></div>
+          <div class="serv__txt">
+            <span class="serv__n">03</span>
+            <h4>Intervención y puesta en valor patrimonial</h4>
+            <p>Revitalización de edificaciones con memoria histórica: dialogamos con el pasado a través de un diseño contemporáneo y sutil, restaurando su esencia para integrarla al presente.</p>
+          </div>
+        </article>
+        <article class="serv rv" tabindex="0">
+          <div class="serv__im"><img src="assets/obra/one-marie-estudio-exhibidor.jpg" alt="Estudio One Marie, mobiliario de exhibición a medida" loading="lazy"></div>
+          <div class="serv__txt">
+            <span class="serv__n">04</span>
+            <h4>Diseño y fabricación de mobiliario (bespoke)</h4>
+            <p>Creación de piezas únicas y a medida que se integran sutilmente a la arquitectura del lugar.</p>
+          </div>
+        </article>
+        <article class="serv rv" tabindex="0">
+          <div class="serv__im"><img src="assets/obra/animales-nocturnos-comedor.jpg" alt="Animales Nocturnos, comedor ejecutado" loading="lazy"></div>
+          <div class="serv__txt">
+            <span class="serv__n">05</span>
+            <h4>Ejecución y materialización de proyectos</h4>
+            <p>Dirección de obra con un control estricto de calidad, asegurando que el diseño aprobado se construya con exactitud.</p>
+          </div>
+        </article>
+        <article class="serv rv" tabindex="0">
+          <div class="serv__im"><img src="assets/obra/french-essencs-plazavea-counter.jpg" alt="French Essenc’s Plaza Vea, counter de venta" loading="lazy"></div>
+          <div class="serv__txt">
+            <span class="serv__n">06</span>
+            <h4>Consultoría espacial corporativa</h4>
+            <p>Asesoría estratégica para marcas, traduciendo su identidad comercial en experiencias físicas tangibles e impactantes de alcance global.</p>
+          </div>
+        </article>
+    </div>
+  </section>
+
+  <section class="con-linea" id="destacados">
+    <div class="wrap dos-col">
+      <div>
+        <p class="eyebrow rv">Espacios con historia</p>
+        <h2 class="tit rv" style="margin-top:.6rem"><span>Un proyecto por</span><span>cada disciplina</span></h2>
+      </div>
+      <div class="rv">
+        <p>Cinco proyectos que resumen nuestro rango: de la vivienda a la puesta en valor patrimonial, ejecutados de principio a fin.</p>
+        <a class="flecha" href="#obra" style="margin-top:1.3rem">Ver toda la obra <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+      </div>
+    </div>
+
+    <div class="wrap destacados">
+      <article class="destacado rv" data-obra="Casa Cardoza" tabindex="0" role="button" aria-label="Ver Casa Cardoza">
+        <div class="ph"><span>Casa Cardoza</span></div>
+        <div class="destacado__ov">
+          <p class="eyebrow">Residencial</p>
+          <h3>Casa Cardoza</h3>
+          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+      </article>
+      <article class="destacado rv" data-obra="Home Ideas — Cusco" tabindex="0" role="button" aria-label="Ver Home Ideas — Cusco">
+        <div class="ph"><span>Home Ideas — Cusco</span></div>
+        <div class="destacado__ov">
+          <p class="eyebrow">Comercial</p>
+          <h3>Home Ideas — Cusco</h3>
+          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+      </article>
+      <article class="destacado rv" data-obra="Animales Nocturnos — Arequipa" tabindex="0" role="button" aria-label="Ver Animales Nocturnos">
+        <div class="destacado__im"><img src="assets/obra/animales-nocturnos-comedor.jpg" alt="Animales Nocturnos, comedor abierto al patio interior" loading="lazy"></div>
+        <div class="destacado__ov">
+          <p class="eyebrow">Gastronómico</p>
+          <h3>Animales Nocturnos</h3>
+          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+      </article>
+      <article class="destacado rv" data-obra="Ez Cont" tabindex="0" role="button" aria-label="Ver Ez Cont">
+        <div class="ph"><span>Ez Cont</span></div>
+        <div class="destacado__ov">
+          <p class="eyebrow">Especializado</p>
+          <h3>Ez Cont</h3>
+          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+      </article>
+      <article class="destacado rv" data-obra="Ecodomos de Chuschuco" tabindex="0" role="button" aria-label="Ver Ecodomos de Chuschuco">
+        <div class="ph"><span>Ecodomos de Chuschuco</span></div>
+        <div class="destacado__ov">
+          <p class="eyebrow">Valorización</p>
+          <h3>Ecodomos de Chuschuco</h3>
+          <span class="destacado__vm">Ver más <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="con-linea clientes" id="clientes">
+    <div class="wrap">
+      <p class="eyebrow rv">Algunos de</p>
+      <h2 class="tit rv" style="margin-top:.6rem;text-align:center"><span style="padding-left:0">Quienes nos</span><span style="padding-left:0">eligen</span></h2>
+      <div class="clientes-lista rv">
+        <span>Home Ideas</span><span>One Marie</span><span>RollaLux</span><span>French Essenc's</span>
+        <span>Decorela</span><span>ALPO</span><span>Joyería Catalina</span><span>Joyería Centro Suizo</span>
+        <span>Colegio de Odontólogos de Tacna</span><span>Bonarisa</span><span>Dento Tacna</span><span>Select Dent</span>
+        <span>Montefiori Kids</span><span>Ez Cont</span><span>Osana</span><span>Oirt+</span>
+        <span>Animales Nocturnos</span><span>Gustitos en Casa</span><span>Gangnam</span><span>Vega's</span>
+        <span>Panadería Delizzia</span><span>La Ponde</span><span>Las Bugas</span><span>MUU</span><span>Rey Dorado</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="trayectoria">
+    <div class="wrap dos-col">
+      <div>
+        <p class="eyebrow rv">Quiénes somos</p>
+        <h2 class="tit rv" style="margin-top:.6rem"><span>Diseño de autor</span><span>con raíces en Tacna</span></h2>
+      </div>
+      <div class="rv">
+        <p>Atelier 9.10 es un estudio de arquitectura y diseño de interiores de alta gama. Con raíces en Tacna, hemos trascendido fronteras para llevar nuestra visión a un escenario nacional e internacional. Nos alejamos de lo genérico para diseñar atmósferas atemporales que reconectan al ser humano con su estado más orgánico. Nuestra firma se caracteriza por esculpir espacios que generan sensaciones reconfortantes a través de un dominio absoluto de las proporciones, la luz natural, la materialidad pura y la integración sutil de la vegetación.</p>
+        <a class="flecha" href="#obra" style="margin-top:1.3rem">Sobre el estudio <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+      </div>
+    </div>
+    <div class="wrap par-asim rv">
+      <figure class="im-a"><img src="assets/obra/casa-basadre-sala.jpg" alt="Casa Basadre, sala a doble altura"></figure>
+      <figure class="im-b"><img src="assets/obra/casa-yaco-comedor.jpg" alt="Casa Yaco, comedor con mural botánico"></figure>
+    </div>
+    <div class="wrap rv" style="margin-top:2.8rem">
+      <p class="promesa">"Diseñar trasciende la pasión; es el arte de interpretar tu esencia."</p>
+    </div>
+  </section>
+
+  <section class="con-linea">
+    <div class="wrap">
+      <p class="eyebrow rv">La esencia de Atelier 9.10</p>
+      <h2 class="tit rv" style="margin-top:.6rem"><span>Lo que guía</span><span>nuestro trabajo</span></h2>
+      <div class="vp">
+        <article class="rv">
+          <p class="eyebrow">Misión</p>
+          <p>Trascender la estética convencional para diseñar experiencias espaciales profundas. Buscamos que quienes habitan nuestros proyectos se conecten íntimamente con la naturaleza a través de una arquitectura sutil y etérea, apoyada en un espíritu vanguardista completamente inmune a las tendencias pasajeras.</p>
+        </article>
+        <article class="rv">
+          <p class="eyebrow">Visión</p>
+          <p>Consolidarnos como el referente definitivo de excelencia y diseño de autor a nivel nacional e internacional, expandiendo nuestra magnitud sin perder el rigor, el nivel de detalle y la personalización que nos caracteriza.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="con-linea">
+    <div class="wrap">
+      <p class="eyebrow rv">Valores fundamentales</p>
+      <h2 class="tit rv" style="margin-top:.6rem"><span>Cuatro principios,</span><span>un mismo criterio</span></h2>
+      <div class="metodo">
+        <div class="metodo__fila rv">
+          <h4>Diferenciación y autoría espacial</h4>
+          <p>No replicamos fórmulas. Cada proyecto es una pieza única, concebida con una materialidad auténtica y una atmósfera inconfundible que eleva el diseño por encima de lo genérico, sin importar su latitud geográfica.</p>
+        </div>
+        <div class="metodo__fila rv">
+          <h4>Vanguardia y sutileza</h4>
+          <p>Abordamos la creación desde una perspectiva no convencional. La creatividad fluye con elegancia, priorizando espacios limpios, libres de ruido visual y obsesionados con la pulcritud del detalle.</p>
+        </div>
+        <div class="metodo__fila rv">
+          <h4>Compromiso sensorial</h4>
+          <p>Diseñamos pensando en las emociones. Nuestro nivel de autoexigencia nos obliga a calibrar cada textura, sombra e incidencia de luz para garantizar que la experiencia final inspire calma y misterio.</p>
+        </div>
+        <div class="metodo__fila rv">
+          <h4>Talento y desarrollo humano</h4>
+          <p>Formamos un ecosistema de trabajo impulsado por la libertad y el rigor, cultivando talentos que comprenden la verdadera sutileza de la arquitectura de clase mundial.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="con-linea" id="equipo">
+    <div class="wrap">
+      <p class="eyebrow rv">Equipo A9.10</p>
+      <h2 class="tit rv" style="margin-top:.6rem"><span>Las personas</span><span>detrás del estudio</span></h2>
+      <div class="equipo">
+        <div class="equipo__card rv">
+          <p class="eyebrow">Arq.</p>
+          <h4>Carolina Galleres</h4>
+          <p>CEO</p>
+        </div>
+        <div class="equipo__card rv">
+          <p class="eyebrow">Arq.</p>
+          <h4>Rosalina Falcón</h4>
+          <p>Coordinadora de Proyectos</p>
+        </div>
+        <div class="equipo__card rv">
+          <p class="eyebrow">Bach. Arq.</p>
+          <h4>Annel Rodríguez</h4>
+          <p>Proyectista Visual</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="con-linea" id="obra">
+    <div class="wrap">
+      <p class="eyebrow rv">Portafolio</p>
+      <h2 class="tit rv" style="margin-top:.6rem"><span>Obra de una</span><span>elegancia serena</span></h2>
+
+      <div class="filtro rv">
+        <button data-f="todos" class="activo">Todos</button>
+        <button data-f="residencial">Residencial</button>
+        <button data-f="comercial">Comercial</button>
+        <button data-f="gastronomico">Gastronómico</button>
+        <button data-f="especializada">Especializada</button>
+        <button data-f="valorizacion">Valorización</button>
+      </div>
+
+      <div class="grilla" id="grilla"></div>
+    </div>
+  </section>
+
+  <section class="con-linea cierre" id="contacto">
+    <div class="wrap">
+      <p class="eyebrow rv" style="font-size:.82rem;letter-spacing:.08em">
+        <a href="mailto:contacto@atelier910.com" style="text-decoration:none">contacto@atelier910.com</a>
+        &nbsp;—&nbsp;
+        <a href="tel:+51976627928" style="text-decoration:none">+51 976 627 928</a>
+      </p>
+      <div class="contacto-cols">
+        <div>
+          <h2 class="tit rv" style="margin-top:.6rem;text-align:left"><span style="padding-left:0">Cuéntenos el proyecto</span><span>que tiene en mente</span></h2>
+          <a class="flecha rv" style="margin-top:1.6rem" href="https://wa.me/51976627928" target="_blank" rel="noopener">Escribir por WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        </div>
+        <form class="form rv" id="formContacto" novalidate>
+          <div class="form__fila">
+            <div>
+              <label for="f-nombre">Nombre</label>
+              <input id="f-nombre" name="nombre" type="text" autocomplete="name" required>
+            </div>
+            <div>
+              <label for="f-celular">Celular</label>
+              <input id="f-celular" name="celular" type="tel" autocomplete="tel">
+            </div>
+          </div>
+          <div>
+            <label for="f-correo">Correo</label>
+            <input id="f-correo" name="correo" type="email" autocomplete="email" required>
+          </div>
+          <div>
+            <label for="f-asunto">Asunto</label>
+            <input id="f-asunto" name="asunto" type="text">
+          </div>
+          <div>
+            <label for="f-mensaje">Mensaje</label>
+            <textarea id="f-mensaje" name="mensaje" required></textarea>
+          </div>
+          <button class="form__enviar" type="submit">Enviar</button>
+          <p class="form__nota" id="formNota" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="con-linea" id="blog">
+    <div class="wrap">
+      <p class="eyebrow rv">Blog</p>
+      <h2 class="tit rv" style="margin-top:.6rem"><span>Ideas sobre</span><span>arquitectura y diseño</span></h2>
+      <div class="blog rv" id="blogLista"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer__cols">
+      <div>
+        <h5>Estudio</h5>
+        <a href="#trayectoria">Nosotros</a>
+        <a href="#disciplinas">Servicios</a>
+        <a href="#obra">Proyectos</a>
+        <a href="#equipo">Equipo</a>
+      </div>
+      <div>
+        <h5>Comunidad</h5>
+        <a href="#destacados">Espacios con historia</a>
+        <a href="#clientes">Quienes nos eligen</a>
+        <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Blog</a>
+      </div>
+      <div>
+        <h5>Contacto</h5>
+        <a href="tel:+51976627928">+51 976 627 928</a>
+        <a href="tel:+51991157053">+51 991 157 053</a>
+        <a href="mailto:contacto@atelier910.com">contacto@atelier910.com</a>
+      </div>
+      <div>
+        <h5>Encuéntranos</h5>
+        <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://atelier910.com" target="_blank" rel="noopener">atelier910.com</a>
+        <a href="https://wa.me/51976627928" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer__logo">
+      <img src="assets/marca/logo-completo.png" alt="Atelier 9.10">
+      <span>© Atelier 9.10 — Tacna, Perú</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Menú mobile
+  const btnMenu = document.getElementById('btnMenu');
+  const menuMovil = document.getElementById('menuMovil');
+  const cerrarMenu = () => {
+    menuMovil.classList.remove('abierto');
+    btnMenu.classList.remove('abierto');
+    document.body.classList.remove('menu-abierto');
+    btnMenu.setAttribute('aria-expanded', 'false');
+    btnMenu.setAttribute('aria-label', 'Abrir menú');
+  };
+  const abrirMenu = () => {
+    menuMovil.classList.add('abierto');
+    btnMenu.classList.add('abierto');
+    document.body.classList.add('menu-abierto');
+    btnMenu.setAttribute('aria-expanded', 'true');
+    btnMenu.setAttribute('aria-label', 'Cerrar menú');
+  };
+  btnMenu.addEventListener('click', () => {
+    menuMovil.classList.contains('abierto') ? cerrarMenu() : abrirMenu();
+  });
+  menuMovil.querySelectorAll('a').forEach((a) => a.addEventListener('click', cerrarMenu));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarMenu(); });
+
+  // Carrusel del hero
+  const imgs = [...document.querySelectorAll('#heroCap img')];
+  let i = 0;
+  const mostrar = (n) => { imgs[i].classList.remove('viva'); i = (n + imgs.length) % imgs.length; imgs[i].classList.add('viva'); };
+  document.getElementById('heroPrev').addEventListener('click', () => mostrar(i - 1));
+  document.getElementById('heroNext').addEventListener('click', () => mostrar(i + 1));
+  let auto = setInterval(() => mostrar(i + 1), 6500);
+  document.querySelector('.hero').addEventListener('mouseenter', () => clearInterval(auto));
+
+  // Portafolio: Anexo 01 completo del brief (66 obras) + proyectos reales del
+  // estudio que no están en el Anexo pero sí documentados con foto en los PDF
+  // fuente (se mantienen como bonus).
+  // Las fotos (`imgs`) salieron de re-extraer el portafolio cruzando la posición
+  // de cada imagen con la del rótulo impreso: el orden de get_images() no es el
+  // orden visual de la página, y asumir que coincidían fue lo que cruzó fotos
+  // entre proyectos distintos en la primera extracción.
+  const OBRAS = [
+    // Residencial (19 Anexo + 1 bonus)
+    {cat:'residencial',nom:'Casa Cano',etiqueta:'Arquitectura integral',ub:'Tacna, Perú',imgs:['assets/obra/casa-cano-vista.jpg','assets/obra/casa-cano-vista-2.jpg','assets/obra/casa-cano-vista-3.jpg']},
+    {cat:'residencial',nom:'Casa Valeriano',etiqueta:'Arquitectura integral',ub:'Costa sur',imgs:['assets/obra/casa-valeriano-fachada.jpg','assets/obra/casa-valeriano-vista.jpg','assets/obra/casa-valeriano-vista-2.jpg','assets/obra/casa-valeriano-vista-3.jpg','assets/obra/casa-valeriano-vista-4.jpg']},
+    {cat:'residencial',nom:'Casa Cardoza',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Dptos. Ramos',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Casa Asqui',etiqueta:'Ambientación de espacios',ub:'Tacna, Perú',imgs:['assets/obra/casa-asqui-vista.jpg','assets/obra/casa-asqui-recibidor.jpg']},
+    {cat:'residencial',nom:'Casa Roque',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Casa Zavala',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Casa Yaco',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/casa-yaco-comedor.jpg','assets/obra/casa-yaco-cocina.jpg','assets/obra/casa-yaco-vista.jpg']},
+    {cat:'residencial',nom:'Casa Marón',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Casa Cusacani',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Casa Mamani',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Casa Portugal',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/casa-portugal-sala.jpg','assets/obra/casa-portugal-recibidor.jpg','assets/obra/casa-portugal-comedor.jpg','assets/obra/casa-portugal-vista.jpg']},
+    {cat:'residencial',nom:'Casa Flores',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/casa-flores-comedor.jpg','assets/obra/casa-flores-bano-principal.jpg','assets/obra/casa-flores-recibidor.jpg','assets/obra/casa-flores-sala.jpg','assets/obra/casa-flores-vista.jpg']},
+    {cat:'residencial',nom:'Quincho Chameng',etiqueta:'Diseño de interiores',ub:'Arica'},
+    {cat:'residencial',nom:'Dpto. De La Vega',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Casa Laura',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/casa-laura-vista.jpg','assets/obra/casa-laura-patio.jpg']},
+    {cat:'residencial',nom:'Cocina Aguilar',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Cocina Salas',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Cocina Neira',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'residencial',nom:'Casa Basadre',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/casa-basadre-sala.jpg','assets/obra/casa-basadre-sala-2.jpg','assets/obra/casa-basadre-vista.jpg']},
+    // Comercial (16 Anexo + 1 bonus)
+    {cat:'comercial',nom:'Carnesí',etiqueta:'Retail',ub:'Tacna, Perú'},
+    {cat:'comercial',nom:'French Essenc’s — Ciudad Nueva',etiqueta:'Retail',ub:'Tacna, Perú',imgs:['assets/obra/french-essencs-exterior-del-local.jpg','assets/obra/french-essencs-area-de-exhibicion.jpg','assets/obra/french-essencs-counter-de-venta.jpg','assets/obra/french-essencs-vista.jpg']},
+    {cat:'comercial',nom:'French Essenc’s — Plaza Vea',etiqueta:'Retail',ub:'Tacna, Perú',imgs:['assets/obra/french-essencs-plazavea-vista.jpg','assets/obra/french-essencs-plazavea-counter.jpg']},
+    {cat:'comercial',nom:'French Essenc’s — Solari / Real Plaza',etiqueta:'Retail',ub:'Tacna, Perú',imgs:['assets/obra/french-essencs-santaclara-vista.jpg']},
+    {cat:'comercial',nom:'French Essenc’s — Desaguadero',etiqueta:'Retail',ub:'Desaguadero, Perú'},
+    {cat:'comercial',nom:'Rollalux Ilo',etiqueta:'Retail',ub:'Ilo, Perú'},
+    {cat:'comercial',nom:'One Marie — San Martín',etiqueta:'Retail',ub:'Tacna, Perú'},
+    {cat:'comercial',nom:'One Marie — Bolognesi',etiqueta:'Retail',ub:'Tacna, Perú'},
+    {cat:'comercial',nom:'One Marie — Estudio',etiqueta:'Retail',ub:'Tacna, Perú',imgs:['assets/obra/one-marie-exhibidoras.jpg','assets/obra/one-marie-counter-de-atencion.jpg','assets/obra/one-marie-estudio-exhibidor.jpg','assets/obra/one-marie-vista.jpg']},
+    {cat:'comercial',nom:'One Marie — FeriTac',etiqueta:'Retail',ub:'Tacna, Perú'},
+    {cat:'comercial',nom:'One Marie — Almacén',etiqueta:'Retail',ub:'Tacna, Perú'},
+    {cat:'comercial',nom:'Home Ideas — Cusco',etiqueta:'Retail',ub:'Cusco, Perú'},
+    {cat:'comercial',nom:'Home Ideas — Industrial',etiqueta:'Retail',ub:'Tacna, Perú'},
+    {cat:'comercial',nom:'Fachada Catalina Joyería',etiqueta:'Retail',ub:'Tacna, Perú'},
+    {cat:'comercial',nom:'Baños Gym RAW',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'comercial',nom:'Fachada Decorela',etiqueta:'Retail',ub:'Trujillo, Perú'},
+    {cat:'comercial',nom:'Joyería Centro Suizo',etiqueta:'Retail',ub:'Tacna, Perú',imgs:['assets/obra/centro-suizo-counter-de-venta.jpg','assets/obra/centro-suizo-counter-de-venta-2.jpg','assets/obra/centro-suizo-counter-de-venta-3.jpg','assets/obra/centro-suizo-vista.jpg']},
+    // Gastronómico (15 Anexo + 1 bonus)
+    {cat:'gastronomico',nom:'Restaurante Miller',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/miller-fachada.jpg','assets/obra/miller-area-de-comensales.jpg','assets/obra/miller-area-de-comensales-2.jpg','assets/obra/miller-vista.jpg']},
+    {cat:'gastronomico',nom:'Gustitos en Casa — Modesto Molina',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'gastronomico',nom:'Gustitos en Casa — Hipólito Unanue',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'gastronomico',nom:'Cafetería Gangnam — 02 de Mayo',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/gangnam-area-de-comensales.jpg','assets/obra/gangnam-area-de-comensales-2.jpg','assets/obra/gangnam-area-de-comensales-3.jpg','assets/obra/gangnam-vista.jpg']},
+    {cat:'gastronomico',nom:'Cafetería Gangnam — Leguía',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'gastronomico',nom:'Panadería Delizzia',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/delizzias-area-de-comensales.jpg','assets/obra/delizzias-area-de-comensales-2.jpg','assets/obra/delizzias-vista.jpg']},
+    {cat:'gastronomico',nom:'Restaurante Mojsa I',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú',imgs:['assets/obra/mojsa-fachada.jpg','assets/obra/mojsa-salon.jpg','assets/obra/mojsa-area-de-comensales.jpg','assets/obra/mojsa-area-de-comensales-2.jpg','assets/obra/mojsa-mural.jpg','assets/obra/mojsa-escaleras.jpg','assets/obra/mojsa-escaleras-2.jpg','assets/obra/mojsa-fachada-2.jpg','assets/obra/mojsa-vista.jpg']},
+    {cat:'gastronomico',nom:'Restaurante Mojsa II',etiqueta:'Diseño + ejecución',ub:'Antofagasta, Chile'},
+    {cat:'gastronomico',nom:'Baños Pollería Chave',etiqueta:'Diseño de interiores',ub:'Tacna, Perú',imgs:['assets/obra/chave-bano-de-varones.jpg','assets/obra/chave-bano-de-damas.jpg','assets/obra/chave-bano-de-damas-2.jpg','assets/obra/chave-vista.jpg']},
+    {cat:'gastronomico',nom:'Pollería Rey Dorado',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'gastronomico',nom:'Pollería Aurora',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'gastronomico',nom:'Pizzería Vega’s',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'gastronomico',nom:'Animales Nocturnos — Arequipa',etiqueta:'Diseño de interiores',ub:'Arequipa, Perú',imgs:['assets/obra/animales-nocturnos-comedor.jpg']},
+    {cat:'gastronomico',nom:'Animales Nocturnos — Tacna',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'gastronomico',nom:'La Ponde',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    {cat:'gastronomico',nom:'Cafetín Patagonia',etiqueta:'Diseño de interiores',ub:'Tacna, Perú'},
+    // Oficina especializada (12 Anexo + 2 bonus)
+    {cat:'especializada',nom:'Clínica Montefiori Kids',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú',imgs:['assets/obra/montefiori-counter-de-atencion.jpg','assets/obra/montefiori-sala-de-juegos.jpg','assets/obra/montefiori-sala-de-juegos-2.jpg','assets/obra/montefiori-vista.jpg']},
+    {cat:'especializada',nom:'Consultorio Bonarisa',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú',imgs:['assets/obra/bonarisa-sala-de-espera.jpg','assets/obra/bonarisa-consultorio.jpg','assets/obra/bonarisa-sala-de-espera-2.jpg','assets/obra/bonarisa-vista.jpg']},
+    {cat:'especializada',nom:'Ez Cont',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú'},
+    {cat:'especializada',nom:'Clínica Select Dental',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú',imgs:['assets/obra/select-dental-counter-de-atencion.jpg','assets/obra/select-dental-area-de-desinfeccion.jpg','assets/obra/select-dental-consultorio.jpg','assets/obra/select-dental-vista.jpg']},
+    {cat:'especializada',nom:'Clínica Dento Tacna',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú',imgs:['assets/obra/dento-tacna-counter-de-atencion.jpg','assets/obra/dento-tacna-area-de-cafetin.jpg','assets/obra/dento-tacna-consultorio.jpg','assets/obra/dento-tacna-vista.jpg']},
+    {cat:'especializada',nom:'Colegio Odontológico Tacna',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú'},
+    {cat:'especializada',nom:'Fachada Dental',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú'},
+    {cat:'especializada',nom:'Oirt+ — Tacna',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú'},
+    {cat:'especializada',nom:'Oirt+ — Cusco',etiqueta:'Diseño + ejecución',ub:'Cusco, Perú'},
+    {cat:'especializada',nom:'Coral Contable',etiqueta:'Consultoría corporativa',ub:'Tacna, Perú'},
+    {cat:'especializada',nom:'Consultorio Calisaya',etiqueta:'Diseño + ejecución',ub:'Tacna, Perú'},
+    {cat:'especializada',nom:'Osana',etiqueta:'Consultoría corporativa',ub:'Tacna, Perú'},
+    {cat:'especializada',nom:'Oficina Nupcial',etiqueta:'Consultoría corporativa',ub:'Tacna, Perú',imgs:['assets/obra/nupcial-vista.jpg']},
+    {cat:'especializada',nom:'Oficina Institucional',etiqueta:'Consultoría corporativa',ub:'Tacna, Perú',imgs:['assets/obra/oficina-institucional-vista.jpg']},
+    // Valorización (4 Anexo — categoría 100% nueva, sin foto en ningún PDF conocido)
+    {cat:'valorizacion',nom:'Ecodomos de Chuschuco',etiqueta:'Puesta en valor patrimonial',ub:'Tacna, Perú'},
+    {cat:'valorizacion',nom:'Guión Museográfico Candarave',etiqueta:'Puesta en valor patrimonial',ub:'Candarave, Perú'},
+    {cat:'valorizacion',nom:'Planta de Olivo Guive',etiqueta:'Puesta en valor patrimonial',ub:'Tacna, Perú'},
+    {cat:'valorizacion',nom:'Casa Quinta Metraud',etiqueta:'Puesta en valor patrimonial',ub:'Tacna, Perú'},
+  ];
+
+  const CATEGORIAS = {
+    residencial: 'Residencial', comercial: 'Comercial', gastronomico: 'Gastronómico',
+    especializada: 'Oficina especializada', valorizacion: 'Valorización',
+  };
+
+  const grilla = document.getElementById('grilla');
+  OBRAS.forEach((o, idx) => {
+    const el = document.createElement('article');
+    el.className = 'obra-card mostrar';
+    el.dataset.cat = o.cat;
+    el.dataset.idx = idx;
+    const media = o.imgs
+      ? `<img src="${o.imgs[0]}" alt="${o.nom}" loading="lazy">`
+      : `<div class="ph"><span>${o.nom}</span></div>`;
+    const cuenta = o.imgs && o.imgs.length > 1 ? ` · ${o.imgs.length} fotos` : '';
+    el.innerHTML = `
+      <div class="obra-card__im">${media}</div>
+      <div class="obra-card__cab"><h4>${o.nom}</h4>
+        <span class="flecha">Ver <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      </div>
+      <div class="obra-card__fila">
+        <span>${o.etiqueta}${cuenta}<b>${o.ub}</b></span>
+      </div>`;
+    grilla.appendChild(el);
+  });
+
+  // Ficha de obra (modal con la galería completa)
+  const ficha = document.getElementById('ficha');
+  const fichaCat = document.getElementById('fichaCat');
+  const fichaTitulo = document.getElementById('fichaTitulo');
+  const fichaMeta = document.getElementById('fichaMeta');
+  const fichaCuerpo = document.getElementById('fichaCuerpo');
+  const fichaX = document.getElementById('fichaX');
+  const fichaPanel = ficha.querySelector('.ficha__panel');
+
+  const cerrarFicha = () => {
+    ficha.hidden = true;
+    document.body.classList.remove('ficha-abierta');
+  };
+  const abrirFicha = (o) => {
+    fichaCat.textContent = CATEGORIAS[o.cat] || '';
+    fichaTitulo.textContent = o.nom;
+    fichaMeta.innerHTML = `<span>${o.etiqueta}</span><span>${o.ub}</span>`;
+    fichaCuerpo.innerHTML = o.imgs
+      ? `<div class="ficha__galeria">${o.imgs
+          .map((src) => `<img src="${src}" alt="${o.nom}" loading="lazy">`)
+          .join('')}</div>`
+      : `<div class="ficha__sinfoto">
+           <div class="ph"><span>${o.nom}</span></div>
+           <p>Todavía no tenemos fotografía de este proyecto en el material del estudio.</p>
+         </div>`;
+    ficha.hidden = false;
+    document.body.classList.add('ficha-abierta');
+    fichaPanel.scrollTop = 0;
+    fichaX.focus();
+  };
+
+  grilla.addEventListener('click', (e) => {
+    const card = e.target.closest('.obra-card');
+    if (card) abrirFicha(OBRAS[card.dataset.idx]);
+  });
+
+  // "Espacios con historia": cada destacado abre la ficha de esa obra del catálogo
+  document.querySelectorAll('.destacado[data-obra]').forEach((d) => {
+    const obra = OBRAS.find((o) => o.nom === d.dataset.obra);
+    if (!obra) return;
+    const abrir = () => abrirFicha(obra);
+    d.addEventListener('click', abrir);
+    d.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); }
+    });
+  });
+  fichaX.addEventListener('click', cerrarFicha);
+  ficha.querySelector('[data-cerrar]').addEventListener('click', cerrarFicha);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarFicha(); });
+
+
+  /* Formulario de contacto. OJO: este archivo es HTML estatico, no hay backend. El envio
+     arma un correo con el cliente de mail del visitante. Antes de publicar hay que
+     conectarlo a un endpoint real (Formspree, Netlify Forms, etc.) cambiando el submit. */
+  const formContacto = document.getElementById('formContacto');
+  const formNota = document.getElementById('formNota');
+  formContacto.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!formContacto.checkValidity()) {
+      formNota.textContent = 'Falta completar nombre, correo y mensaje.';
+      formContacto.querySelector(':invalid').focus();
+      return;
+    }
+    const v = (n) => formContacto.elements[n].value.trim();
+    const cuerpo = [
+      'Nombre: ' + v('nombre'),
+      'Celular: ' + (v('celular') || '—'),
+      'Correo: ' + v('correo'),
+      '',
+      v('mensaje'),
+    ].join('\n');
+    formNota.textContent = 'Abriendo su aplicación de correo…';
+    window.location.href = 'mailto:contacto@atelier910.com'
+      + '?subject=' + encodeURIComponent(v('asunto') || 'Consulta desde la web')
+      + '&body=' + encodeURIComponent(cuerpo);
+  });
+
+  /* Blog. ENTRADAS esta vacio a proposito: la clienta todavia no entrego articulos y aca no
+     se inventa contenido. Al cargar el array con {titulo, fecha, autor, bajada, img, url}
+     el listado se arma solo con el formato de la referencia del brief. */
+  const ENTRADAS = [];
+
+  const blogLista = document.getElementById('blogLista');
+  if (ENTRADAS.length) {
+    blogLista.innerHTML = ENTRADAS.map((e) => `
+      <article class="blog__item">
+        ${e.img ? `<img src="${e.img}" alt="${e.titulo}" loading="lazy">` : '<div class="ph"><span>Atelier 9.10</span></div>'}
+        <div>
+          <h4>${e.url ? `<a href="${e.url}">${e.titulo}</a>` : e.titulo}</h4>
+          <p class="blog__meta">${[e.autor, e.fecha].filter(Boolean).join(' · ')}</p>
+          <p>${e.bajada}</p>
+        </div>
+      </article>`).join('');
+  } else {
+    blogLista.innerHTML = `
+      <div class="blog__vacio">
+        <p>Las primeras publicaciones del estudio están en preparación.</p>
+        <a class="flecha" style="margin-top:1.2rem" href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">
+          Ver el trabajo en Instagram
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </div>`;
+  }
+
+  document.querySelectorAll('.filtro button').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.filtro button').forEach((x) => x.classList.remove('activo'));
+      b.classList.add('activo');
+      const f = b.dataset.f;
+      document.querySelectorAll('.obra-card').forEach((c) => {
+        const va = f === 'todos' || c.dataset.cat === f;
+        c.classList.toggle('mostrar', va);
+      });
+    });
+  });
+
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: .12, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.rv').forEach((el, idx) => {
+    el.style.transitionDelay = (idx % 4) * 70 + 'ms';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
