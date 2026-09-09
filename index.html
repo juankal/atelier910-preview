@@ -362,7 +362,24 @@
   /* --- visión/propósito --- */
   .vp{display:grid;gap:2.2rem;margin-top:2rem}
   @media(min-width:760px){.vp{grid-template-columns:1fr 1fr;gap:3rem}}
-  .vp article p{margin-top:.7rem;color:var(--grafito);font-size:.92rem;max-width:42ch}
+  /* la clienta marco que el texto se quedaba corto contra el ancho real de la
+     columna (42ch dejaba un tercio de la columna vacio en desktop): sin tope,
+     el ancho de la columna del grid ya es el limite natural de linea */
+  .vp article p{margin-top:.7rem;color:var(--grafito);font-size:.92rem;max-width:none}
+
+  /* --- marca de agua de identidad detras de mision/vision, mismo tratamiento
+     que .ph::before y la ficha de servicio sin foto (assets/marca/logo-marca.png
+     a opacidad baja) --- */
+  .vp-seccion{position:relative;overflow:hidden}
+  .vp-seccion > .wrap{position:relative;z-index:1}
+  @media(min-width:760px){
+    .vp-seccion::before{
+      content:"";position:absolute;top:50%;right:-2%;transform:translateY(-50%);
+      width:24rem;aspect-ratio:1;z-index:0;pointer-events:none;
+      background:url(assets/marca/logo-marca.png) center/contain no-repeat;
+      opacity:.06;
+    }
+  }
 
   /* --- valores fundamentales: diagrama de 4 íconos (la clienta pidió menos texto y un gráfico) --- */
   .metodo{display:grid;gap:2.6rem 3rem;margin-top:2.4rem}
@@ -794,7 +811,7 @@
     </div>
   </section>
 
-  <section class="con-linea">
+  <section class="con-linea vp-seccion">
     <div class="wrap">
       <p class="eyebrow rv">La esencia de Atelier 9.10</p>
       <h2 class="tit rv" style="margin-top:.6rem"><span>Lo que guía</span><span>nuestro trabajo</span></h2>
