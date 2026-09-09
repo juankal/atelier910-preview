@@ -30,6 +30,10 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  /* casi toda medida del archivo esta en rem (relativo a este font-size raiz, no al
+     de <body>): subirlo solo en desktop agranda letra y espaciado del sitio entero
+     de forma proporcional sin tocar mobile, en vez de perseguir cada regla suelta */
+  @media(min-width:860px){html{font-size:18px}}
   /* Swis721 LtCn BT (cuerpo de texto en el brief) es una fuente paga, no disponible en
      Google Fonts; Barlow Condensed es la alternativa libre más cercana en proporción
      condensada y peso light. Tamaño base subido a 16px porque una condensada se lee
