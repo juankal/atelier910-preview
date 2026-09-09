@@ -61,7 +61,7 @@
   /* titular de firma: segunda línea indentada a la derecha */
   .tit{font-weight:500;letter-spacing:-.01em;text-transform:uppercase;line-height:1.14}
   .tit span{display:block}
-  .tit span:nth-child(2){padding-left:1.4em}
+  .tit span:nth-child(2){padding-left:0}
 
   /* acento script (Allura) reservado para la frase de marca */
   .promesa{
@@ -344,9 +344,9 @@
   @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .logo-chip{
     flex:none;display:flex;align-items:center;justify-content:center;
-    height:64px;min-width:110px;
+    height:84px;min-width:140px;
   }
-  .logo-chip img{max-height:100%;max-width:150px;width:auto;object-fit:contain;opacity:.85;transition:opacity .3s}
+  .logo-chip img{max-height:100%;max-width:190px;width:auto;object-fit:contain;opacity:.55;transition:opacity .3s}
   .logo-chip:hover img{opacity:1}
   .logo-chip span{
     font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.03em;
@@ -358,6 +358,19 @@
   @media(min-width:640px){.equipo{grid-template-columns:repeat(3,1fr)}}
   .equipo__card h4{font-size:1rem;font-weight:500}
   .equipo__card p{color:var(--grafito);font-size:.94rem;margin-top:.3rem}
+
+  /* marca de agua sobre el eyebrow "Equipo A9.10": mismo tratamiento que
+     .vp-seccion::before, quedaba mucho espacio vacio arriba de las 3 fichas */
+  #equipo{position:relative;overflow:hidden}
+  #equipo > .wrap{position:relative;z-index:1}
+  @media(min-width:760px){
+    #equipo::before{
+      content:"";position:absolute;top:-2rem;right:-2%;
+      width:20rem;aspect-ratio:1;z-index:0;pointer-events:none;
+      background:url(assets/marca/logo-marca.png) center/contain no-repeat;
+      opacity:.06;
+    }
+  }
 
   /* --- visión/propósito --- */
   .vp{display:grid;gap:2.2rem;margin-top:2rem}
@@ -674,8 +687,8 @@
       <div>
         <h2 class="tit rv">Espacios con historia</h2>
       </div>
-      <div class="rv">
-        <a class="flecha" href="#obra" data-panel="proyectos" style="margin-top:1.3rem">Explorar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+      <div class="rv" style="justify-self:end">
+        <a class="flecha" href="#obra" data-panel="proyectos">Explorar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </div>
     </div>
 
