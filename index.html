@@ -63,6 +63,7 @@
   .promesa{
     font-family:'Allura',cursive;font-weight:400;text-transform:none;letter-spacing:0;
     font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.3;color:var(--azul-marino);
+    text-align:center;
   }
 
   .flecha{
@@ -109,6 +110,11 @@
     .barra nav{display:flex}
     .barra nav a{text-decoration:none}
     .barra nav a.activo{color:var(--arcilla)}
+    /* la clienta pidio el logo mas a la izquierda: en pantallas anchas .wrap se
+       centra por su max-width:1180px, así que el logo queda tan lejos del borde
+       como el resto del contenido. La barra no necesita ese tope: se libera del
+       ancho maximo y usa un padding fijo propio para pegarse a ambos bordes. */
+    .barra__in{max-width:none;padding-inline:2rem}
   }
 
   /* --- hero: carrusel de obra --- */
@@ -130,7 +136,7 @@
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   }
   .hero__eyebrow{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;opacity:.85;margin-bottom:1.1rem}
-  .hero h1{font-size:clamp(1.9rem,7vw,2.9rem)}
+  .hero h1{font-size:clamp(2.3rem,9vw,3.8rem)}
   .hero h1 span:nth-child(2){padding-left:0}
   .hero p{margin:1.1rem auto 0;max-width:48ch;font-size:.92rem;opacity:.92;line-height:1.7}
   .hero__cta{
@@ -160,6 +166,12 @@
   @media(min-width:860px){.dos-col{grid-template-columns:1fr 1fr;gap:4rem;align-items:start}}
   .dos-col p{color:var(--grafito);font-size:.94rem;max-width:44ch;margin-top:1rem}
 
+  /* --- "Diseño de autor con identidad": titulo mas grande y cuerpo desplazado para
+     que su primera linea alinee con la del h2 (que arranca mas abajo por el eyebrow) --- */
+  .trayectoria__tit{font-size:clamp(1.6rem,4vw,2.1rem)}
+  .trayectoria__cuerpo p{font-size:1.02rem}
+  @media(min-width:860px){.trayectoria__cuerpo{padding-top:1.8rem}}
+
   .par-asim{display:grid;gap:1rem;margin-top:2.2rem}
   @media(min-width:640px){
     .par-asim{grid-template-columns:1fr 1.15fr;align-items:end;gap:1.25rem}
@@ -172,7 +184,15 @@
   /* --- espacios con historia (5 destacados, uno por categoría) --- */
   .destacados{display:grid;gap:2.2rem;margin-top:2.4rem}
   @media(min-width:640px){.destacados{grid-template-columns:repeat(2,1fr)}}
-  @media(min-width:960px){.destacados{grid-template-columns:repeat(3,1fr);gap:2rem}}
+  @media(min-width:960px){
+    /* 6 columnas + span:2 equivale en ancho a 3 columnas (mismo calculo con el gap),
+       pero permite centrar la 2da fila (5 obras = 3 + 2) en vez de dejarla pegada
+       a la izquierda con un hueco a la derecha */
+    .destacados{grid-template-columns:repeat(6,1fr);gap:2rem}
+    .destacado{grid-column:span 2}
+    .destacado:nth-child(4){grid-column:2/4}
+    .destacado:nth-child(5){grid-column:4/6}
+  }
   .destacado{position:relative;overflow:hidden;cursor:pointer;background:var(--carbon)}
   .destacado .ph{aspect-ratio:16/11}
   /* el rotulo ya va en el overlay: el placeholder queda solo con la marca de agua */
@@ -241,7 +261,7 @@
     letter-spacing:.02em;color:#fff;margin-top:.3rem;line-height:1.15;font-weight:500;
   }
   .serv__txt p{
-    font-size:.76rem;line-height:1.45;color:var(--gris-claro);margin-top:0;
+    font-size:.86rem;line-height:1.45;color:var(--gris-claro);margin-top:0;
     opacity:0;max-height:0;overflow:hidden;
     transition:opacity .45s ease,max-height .45s ease,margin-top .45s ease;
   }
@@ -423,7 +443,7 @@
   /* --- footer: CTA + WhatsApp, referencia columnanegra.com que aprobó la clienta --- */
   footer{background:var(--carbon);color:var(--gris-claro);padding-block:4.6rem 2.2rem}
   .footer__cta{text-align:center}
-  .footer__cta .tit{color:#fff}
+  .footer__cta .tit{color:#fff;font-size:clamp(1.7rem,4.6vw,2.5rem)}
   .footer__cta .tit span{padding-left:0}
   .footer__wa{
     display:inline-flex;align-items:center;gap:.5em;margin-top:1.9rem;padding:.9rem 2.1rem;
@@ -598,7 +618,7 @@
           <div class="serv__txt">
             <span class="serv__n">03</span>
             <h4>Intervención y puesta en valor patrimonial</h4>
-            <p>Revitalización de edificaciones con memoria histórica: dialogamos con el pasado a través de un diseño contemporáneo y sutil, restaurando su esencia para integrarla al presente.</p>
+            <p>Revitalización de edificaciones con memoria histórica: diseño contemporáneo y sutil que restaura su esencia.</p>
           </div>
         </article>
         <article class="serv rv" tabindex="0">
@@ -753,9 +773,9 @@
     <div class="wrap dos-col">
       <div>
         <p class="eyebrow rv">Quiénes somos</p>
-        <h2 class="tit rv" style="margin-top:.6rem"><span>Diseño de autor</span><span>con raíces en Tacna</span></h2>
+        <h2 class="tit rv trayectoria__tit" style="margin-top:.6rem"><span>Diseño de autor</span><span>con identidad</span></h2>
       </div>
-      <div class="rv">
+      <div class="rv trayectoria__cuerpo">
         <p>Atelier 9.10 es un estudio de arquitectura y diseño de interiores de alta gama. Con raíces en Tacna, hemos trascendido fronteras para llevar nuestra visión a un escenario nacional e internacional. Nos alejamos de lo genérico para diseñar atmósferas atemporales que reconectan al ser humano con su estado más orgánico. Nuestra firma se caracteriza por esculpir espacios que generan sensaciones reconfortantes a través de un dominio absoluto de las proporciones, la luz natural, la materialidad pura y la integración sutil de la vegetación.</p>
         <a class="flecha" href="#obra" data-panel="proyectos" style="margin-top:1.3rem">Sobre el equipo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </div>
@@ -766,7 +786,7 @@
     </div>
     <div class="wrap rv" style="margin-top:2.8rem">
       <p class="promesa">"El espacio arquitectónico debe ser un reflejo de la vida humana, debe adaptarse a ella."</p>
-      <p class="eyebrow" style="margin-top:.6rem">— Lina Bo Bardi</p>
+      <p class="eyebrow" style="margin-top:.6rem;text-align:right">— Lina Bo Bardi</p>
     </div>
   </section>
 
@@ -928,8 +948,8 @@
     </div>
     <div class="footer__base-der">
       <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.facebook.com/atelier9.10" target="_blank" rel="noopener">Facebook</a>
       <a href="https://pe.linkedin.com/company/atelier910" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.facebook.com/atelier9.10" target="_blank" rel="noopener">Facebook</a>
       <span>© Atelier 9.10 — Tacna, Perú</span>
     </div>
   </div>
