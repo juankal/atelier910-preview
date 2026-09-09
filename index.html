@@ -313,17 +313,17 @@
     mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
   }
   .marquee--fwd{margin-top:3.2rem}
-  .marquee__track{display:flex;gap:1.1rem;width:max-content;animation:marquee 68s linear infinite}
+  .marquee__track{display:flex;gap:2.4rem;width:max-content;animation:marquee 150s linear infinite}
   .marquee--rev .marquee__track{animation-direction:reverse}
   .marquee:hover .marquee__track{animation-play-state:paused}
-  .marquee__set{display:flex;align-items:stretch;gap:1.1rem;flex:none}
+  .marquee__set{display:flex;align-items:center;gap:2.4rem;flex:none}
   @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .logo-chip{
     flex:none;display:flex;align-items:center;justify-content:center;
-    height:80px;min-width:150px;padding:.9rem 1.4rem;border-radius:8px;
-    background:var(--carbon);border:1px solid rgba(236,234,237,.16);
+    height:64px;min-width:110px;
   }
-  .logo-chip img{max-height:100%;max-width:118px;width:auto;object-fit:contain;border-radius:6px}
+  .logo-chip img{max-height:100%;max-width:150px;width:auto;object-fit:contain;opacity:.85;transition:opacity .3s}
+  .logo-chip:hover img{opacity:1}
   .logo-chip span{
     font-family:'Antonio',sans-serif;text-transform:uppercase;letter-spacing:.03em;
     font-size:.92rem;line-height:1.2;text-align:center;color:var(--gris-claro);opacity:.85;
@@ -684,66 +684,64 @@
     <div class="marquee marquee--fwd rv">
       <div class="marquee__track">
         <div class="marquee__set">
-          <span class="logo-chip" data-cliente="home-ideas"><img src="assets/marca/clientes/home-ideas.svg" alt="Home Ideas"></span>
-          <span class="logo-chip" data-cliente="one-marie"><img src="assets/marca/clientes/one-marie.jpg" alt="One Marie"></span>
-          <span class="logo-chip" data-cliente="rollalux"><span>RollaLux</span></span>
-          <span class="logo-chip" data-cliente="french-essencs"><img src="assets/marca/clientes/french-essencs.jpg" alt="French Essenc's"></span>
-          <span class="logo-chip" data-cliente="decorela"><span>Decorela</span></span>
-          <span class="logo-chip" data-cliente="alpo"><img src="assets/marca/clientes/alpo.jpg" alt="ALPO"></span>
-          <span class="logo-chip" data-cliente="joyeria-catalina"><span>Joyería Catalina</span></span>
-          <span class="logo-chip" data-cliente="joyeria-centro-suizo"><img src="assets/marca/clientes/joyeria-centro-suizo.jpg" alt="Joyería Centro Suizo"></span>
-          <span class="logo-chip" data-cliente="colegio-odontologos-tacna"><img src="assets/marca/clientes/colegio-odontologos-tacna.jpg" alt="Colegio de Odontólogos de Tacna"></span>
-          <span class="logo-chip" data-cliente="bonarisa"><span>Bonarisa</span></span>
-          <span class="logo-chip" data-cliente="dento-tacna"><img src="assets/marca/clientes/dento-tacna.jpg" alt="Dento Tacna"></span>
-          <span class="logo-chip" data-cliente="select-dent"><span>Select Dent</span></span>
-          <span class="logo-chip" data-cliente="montefiori-kids"><img src="assets/marca/clientes/montefiori-kids.jpg" alt="Montefiori Kids"></span>
-        </div>
-        <div class="marquee__set" aria-hidden="true">
-          <span class="logo-chip"><img src="assets/marca/clientes/home-ideas.svg" alt=""></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/one-marie.jpg" alt=""></span>
-          <span class="logo-chip"><span>RollaLux</span></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/french-essencs.jpg" alt=""></span>
-          <span class="logo-chip"><span>Decorela</span></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/alpo.jpg" alt=""></span>
-          <span class="logo-chip"><span>Joyería Catalina</span></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/joyeria-centro-suizo.jpg" alt=""></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/colegio-odontologos-tacna.jpg" alt=""></span>
-          <span class="logo-chip"><span>Bonarisa</span></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/dento-tacna.jpg" alt=""></span>
-          <span class="logo-chip"><span>Select Dent</span></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/montefiori-kids.jpg" alt=""></span>
-        </div>
-      </div>
-    </div>
-    <div class="marquee marquee--rev rv">
-      <div class="marquee__track">
-        <div class="marquee__set">
-          <span class="logo-chip" data-cliente="ez-cont"><span>Ez Cont</span></span>
-          <span class="logo-chip" data-cliente="osana"><span>Osana</span></span>
-          <span class="logo-chip" data-cliente="oirt-plus"><img src="assets/marca/clientes/oirt-plus.jpg" alt="Oirt+"></span>
-          <span class="logo-chip" data-cliente="animales-nocturnos"><img src="assets/marca/clientes/animales-nocturnos.jpg" alt="Animales Nocturnos"></span>
-          <span class="logo-chip" data-cliente="gustitos-en-casa"><img src="assets/marca/clientes/gustitos-en-casa.jpg" alt="Gustitos en Casa"></span>
-          <span class="logo-chip" data-cliente="gangnam"><img src="assets/marca/clientes/gangnam.jpg" alt="Gangnam"></span>
-          <span class="logo-chip" data-cliente="vegas"><img src="assets/marca/clientes/vegas.jpg" alt="Vega's"></span>
+          <span class="logo-chip" data-cliente="home-ideas"><img src="assets/marca/clientes/home-ideas-gris.png" alt="Home Ideas"></span>
+          <span class="logo-chip" data-cliente="one-marie"><img src="assets/marca/clientes/one-marie-gris.png" alt="One Marie"></span>
+          <span class="logo-chip" data-cliente="royallux"><img src="assets/marca/clientes/royallux-gris.png" alt="RoyalLux"></span>
+          <span class="logo-chip" data-cliente="french-essencs"><img src="assets/marca/clientes/french-essencs-gris.png" alt="French Essenc's"></span>
+          <span class="logo-chip" data-cliente="decorela"><img src="assets/marca/clientes/decorela-gris.png" alt="Decorela"></span>
+          <span class="logo-chip" data-cliente="alpo"><img src="assets/marca/clientes/alpo-gris.png" alt="ALPO"></span>
+          <span class="logo-chip" data-cliente="joyeria-catalina"><img src="assets/marca/clientes/joyeria-catalina-gris.png" alt="Joyería Catalina"></span>
+          <span class="logo-chip" data-cliente="joyeria-centro-suizo"><img src="assets/marca/clientes/joyeria-centro-suizo-gris.png" alt="Joyería Centro Suizo"></span>
+          <span class="logo-chip" data-cliente="verticall"><img src="assets/marca/clientes/verticall-gris.png" alt="Verticall"></span>
+          <span class="logo-chip" data-cliente="colegio-odontologos-tacna"><img src="assets/marca/clientes/colegio-odontologos-tacna-gris.png" alt="Colegio de Odontólogos de Tacna"></span>
+          <span class="logo-chip" data-cliente="bonarisa"><img src="assets/marca/clientes/bonarisa-gris.png" alt="Bonarisa"></span>
+          <span class="logo-chip" data-cliente="dento-tacna"><img src="assets/marca/clientes/dento-tacna-gris.png" alt="Dento Tacna"></span>
+          <span class="logo-chip" data-cliente="select-dent"><img src="assets/marca/clientes/select-dent-gris.png" alt="Select Dent"></span>
+          <span class="logo-chip" data-cliente="montefiori-kids"><img src="assets/marca/clientes/montefiori-kids-gris.png" alt="Montefiori Kids"></span>
+          <span class="logo-chip" data-cliente="ez-cont"><img src="assets/marca/clientes/ez-cont-gris.png" alt="Ez Cont"></span>
+          <span class="logo-chip" data-cliente="osana"><img src="assets/marca/clientes/osana-gris.png" alt="Osana"></span>
+          <span class="logo-chip" data-cliente="oirt-plus"><img src="assets/marca/clientes/oirt-plus-gris.png" alt="Oirt+"></span>
+          <span class="logo-chip" data-cliente="alfa-dog"><img src="assets/marca/clientes/alfa-dog-gris.png" alt="Alfa Dog"></span>
+          <span class="logo-chip" data-cliente="animales-nocturnos"><img src="assets/marca/clientes/animales-nocturnos-gris.png" alt="Animales Nocturnos"></span>
+          <span class="logo-chip" data-cliente="gustitos-en-casa"><img src="assets/marca/clientes/gustitos-en-casa-gris.png" alt="Gustitos en Casa"></span>
+          <span class="logo-chip" data-cliente="gangnam"><img src="assets/marca/clientes/gangnam-gris.png" alt="Gangnam"></span>
+          <span class="logo-chip" data-cliente="vegas"><img src="assets/marca/clientes/vegas-gris.png" alt="Vega's"></span>
           <span class="logo-chip" data-cliente="panaderia-delizzia"><span>Panadería Delizzia</span></span>
-          <span class="logo-chip" data-cliente="la-ponde"><img src="assets/marca/clientes/la-ponde.jpg" alt="La Ponde"></span>
-          <span class="logo-chip" data-cliente="las-bugas"><span>Las Bugas</span></span>
-          <span class="logo-chip" data-cliente="muu"><img src="assets/marca/clientes/muu.jpg" alt="MUU"></span>
-          <span class="logo-chip" data-cliente="rey-dorado"><img src="assets/marca/clientes/rey-dorado.jpg" alt="Rey Dorado"></span>
+          <span class="logo-chip" data-cliente="la-ponde"><img src="assets/marca/clientes/la-ponde-gris.png" alt="La Ponde"></span>
+          <span class="logo-chip" data-cliente="las-bugas"><img src="assets/marca/clientes/las-bugas-gris.png" alt="Las Bugas"></span>
+          <span class="logo-chip" data-cliente="chez-maggy"><span>Chez Maggy</span></span>
+          <span class="logo-chip" data-cliente="muu"><img src="assets/marca/clientes/muu-gris.png" alt="MUU"></span>
+          <span class="logo-chip" data-cliente="rey-dorado"><img src="assets/marca/clientes/rey-dorado-gris.png" alt="Rey Dorado"></span>
         </div>
         <div class="marquee__set" aria-hidden="true">
-          <span class="logo-chip"><span>Ez Cont</span></span>
-          <span class="logo-chip"><span>Osana</span></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/oirt-plus.jpg" alt=""></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/animales-nocturnos.jpg" alt=""></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/gustitos-en-casa.jpg" alt=""></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/gangnam.jpg" alt=""></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/vegas.jpg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/home-ideas-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/one-marie-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/royallux-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/french-essencs-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/decorela-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/alpo-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/joyeria-catalina-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/joyeria-centro-suizo-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/verticall-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/colegio-odontologos-tacna-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/bonarisa-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/dento-tacna-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/select-dent-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/montefiori-kids-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/ez-cont-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/osana-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/oirt-plus-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/alfa-dog-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/animales-nocturnos-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/gustitos-en-casa-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/gangnam-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/vegas-gris.png" alt=""></span>
           <span class="logo-chip"><span>Panadería Delizzia</span></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/la-ponde.jpg" alt=""></span>
-          <span class="logo-chip"><span>Las Bugas</span></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/muu.jpg" alt=""></span>
-          <span class="logo-chip"><img src="assets/marca/clientes/rey-dorado.jpg" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/la-ponde-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/las-bugas-gris.png" alt=""></span>
+          <span class="logo-chip"><span>Chez Maggy</span></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/muu-gris.png" alt=""></span>
+          <span class="logo-chip"><img src="assets/marca/clientes/rey-dorado-gris.png" alt=""></span>
         </div>
       </div>
     </div>
