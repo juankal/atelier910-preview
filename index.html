@@ -359,17 +359,16 @@
   .equipo__card h4{font-size:1rem;font-weight:500}
   .equipo__card p{color:var(--grafito);font-size:.94rem;margin-top:.3rem}
 
-  /* marca de agua sobre el eyebrow "Equipo A9.10": mismo tratamiento que
-     .vp-seccion::before, quedaba mucho espacio vacio arriba de las 3 fichas */
-  #equipo{position:relative;overflow:hidden}
+  /* marca de agua junto al titulo "Equipo A9.10": del porte del titulo y
+     pegada a su izquierda, no un bloque grande centrado en toda la seccion */
+  #equipo{overflow:hidden}
   #equipo > .wrap{position:relative;z-index:1}
+  #equipo h2.tit{position:relative;z-index:0}
   @media(min-width:760px){
-    #equipo::before{
-      content:"";position:absolute;top:50%;transform:translateY(-50%);
-      --tl:calc(max(0px,(100% - 1180px)/2) + var(--gutter));
-      --aw:min(16rem,calc(var(--tl) - 1rem));
-      left:calc(var(--tl) - 1rem - var(--aw));
-      width:var(--aw);aspect-ratio:1;z-index:0;pointer-events:none;
+    #equipo h2.tit::before{
+      content:"";position:absolute;z-index:-1;top:50%;transform:translateY(-50%);
+      right:calc(100% + .6rem);
+      height:2em;aspect-ratio:1;pointer-events:none;
       background:url(assets/marca/logo-marca.png) center/contain no-repeat;
       opacity:.06;
     }
