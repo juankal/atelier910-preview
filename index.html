@@ -360,15 +360,24 @@
   .equipo__card p{color:var(--grafito);font-size:.94rem;margin-top:.3rem}
 
   /* marca de agua junto al bloque titulo+equipo: mismo alto que ese
-     contenido (del titulo a las fichas), pegada a su izquierda */
+     contenido (del titulo a las fichas). En mobile no hay margen a la
+     izquierda para pegarla, asi que sangra desde el borde del bloque
+     (mismo espiritu que en desktop) */
   #equipo{overflow:hidden}
   #equipo > .wrap{position:relative;z-index:1}
+  #equipo > .wrap::before{
+    content:"";position:absolute;z-index:-1;
+    aspect-ratio:1;pointer-events:none;
+    background:url(assets/marca/logo-marca.png) center/contain no-repeat;
+    opacity:.06;
+  }
+  @media(max-width:759.98px){
+    #equipo > .wrap::before{top:-10%;bottom:-10%;left:-18%;}
+  }
   @media(min-width:760px){
     #equipo > .wrap::before{
-      content:"";position:absolute;z-index:-1;top:-22%;bottom:-22%;right:calc(100% - var(--gutter) + .5rem);
-      aspect-ratio:1;pointer-events:none;
-      background:url(assets/marca/logo-marca.png) center/contain no-repeat;
-      opacity:.06;
+      top:-22%;bottom:-22%;
+      right:calc(100% - var(--gutter) + .5rem);
     }
   }
 
