@@ -382,16 +382,23 @@
 
   /* --- marca de agua de identidad junto a mision/vision: logo completo
      (no solo la A) porque esta seccion es la esencia/identidad de marca.
-     Del alto del bloque mision+vision (+40%), pegada a su derecha --- */
+     En mobile no hay columna al lado para pegarla, asi que sangra desde
+     el borde derecho del bloque (mismo espiritu que en desktop) --- */
   .vp-seccion{overflow:hidden}
   .vp-seccion > .wrap{position:relative;z-index:1}
+  .vp::before{
+    content:"";position:absolute;z-index:-1;
+    aspect-ratio:1;pointer-events:none;
+    background:url(assets/marca/logo-compacto.png) center/contain no-repeat;
+    opacity:.06;
+  }
+  @media(max-width:759.98px){
+    .vp::before{top:-10%;bottom:-10%;right:-18%;}
+  }
   @media(min-width:760px){
     .vp::before{
-      content:"";position:absolute;z-index:-1;top:-22%;bottom:-22%;
+      top:-22%;bottom:-22%;
       left:calc(100% - var(--gutter) + .5rem);
-      aspect-ratio:1;pointer-events:none;
-      background:url(assets/marca/logo-compacto.png) center/contain no-repeat;
-      opacity:.06;
     }
   }
 
