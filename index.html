@@ -359,16 +359,14 @@
   .equipo__card h4{font-size:1rem;font-weight:500}
   .equipo__card p{color:var(--grafito);font-size:.94rem;margin-top:.3rem}
 
-  /* marca de agua junto al titulo "Equipo A9.10": del porte del titulo y
-     pegada a su izquierda, no un bloque grande centrado en toda la seccion */
+  /* marca de agua junto al bloque titulo+equipo: mismo alto que ese
+     contenido (del titulo a las fichas), pegada a su izquierda */
   #equipo{overflow:hidden}
   #equipo > .wrap{position:relative;z-index:1}
-  #equipo h2.tit{position:relative;z-index:0}
   @media(min-width:760px){
-    #equipo h2.tit::before{
-      content:"";position:absolute;z-index:-1;top:50%;transform:translateY(-50%);
-      right:calc(100% + .6rem);
-      height:2em;aspect-ratio:1;pointer-events:none;
+    #equipo > .wrap::before{
+      content:"";position:absolute;z-index:-1;top:0;bottom:0;right:100%;
+      aspect-ratio:1;pointer-events:none;
       background:url(assets/marca/logo-marca.png) center/contain no-repeat;
       opacity:.06;
     }
