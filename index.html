@@ -354,8 +354,37 @@
   }
 
   /* --- equipo a9.10 --- */
-  .equipo{display:grid;gap:2rem;margin-top:2.2rem}
-  @media(min-width:640px){.equipo{grid-template-columns:repeat(3,1fr)}}
+  /* mobile: carril horizontal con scroll-snap ("uno al lado de otro, no uno
+     abajo de otro", pedido de la clienta); desktop ya queda lado a lado con
+     el grid de 3 columnas, no necesita carril */
+  .equipo{
+    display:flex;gap:1rem;margin-top:2.2rem;
+    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+    margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);
+    padding-bottom:.4rem;
+  }
+  .equipo::-webkit-scrollbar{display:none}
+  .equipo__card{flex:0 0 min(230px,72%);scroll-snap-align:start}
+  @media(min-width:640px){
+    .equipo{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;overflow:visible;margin-inline:0;padding-inline:0}
+    .equipo__card{flex:initial}
+  }
+  .equipo__foto{
+    aspect-ratio:3/4;border-radius:4px;margin-bottom:.9rem;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,var(--carbon),var(--azul-marino));
+  }
+  .equipo__foto::before{
+    content:"";position:absolute;inset:0;margin:auto;width:38%;aspect-ratio:1;
+    background:url(assets/marca/logo-marca.png) center/contain no-repeat;opacity:.14;
+  }
+  .equipo__deslizar{
+    display:flex;align-items:center;gap:.4rem;margin-top:.9rem;
+    font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--arcilla);
+  }
+  .equipo__deslizar svg{width:14px;height:14px;animation:equipo-deslizar 1.6s ease-in-out infinite}
+  @keyframes equipo-deslizar{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+  @media(prefers-reduced-motion:reduce){.equipo__deslizar svg{animation:none}}
+  @media(min-width:640px){.equipo__deslizar{display:none}}
   .equipo__card h4{font-size:1rem;font-weight:500}
   .equipo__card p{color:var(--grafito);font-size:.94rem;margin-top:.3rem}
 
@@ -893,21 +922,25 @@
       <h2 class="tit rv">Equipo A9.10</h2>
       <div class="equipo">
         <div class="equipo__card rv">
+          <div class="equipo__foto"></div>
           <p class="eyebrow">Arq.</p>
           <h4>Carolina Galleres</h4>
           <p>CEO</p>
         </div>
         <div class="equipo__card rv">
+          <div class="equipo__foto"></div>
           <p class="eyebrow">Arq.</p>
           <h4>Rosalina Falcón</h4>
           <p>Coordinadora de Proyectos</p>
         </div>
         <div class="equipo__card rv">
+          <div class="equipo__foto"></div>
           <p class="eyebrow">Bach. Arq.</p>
           <h4>Annel Rodríguez</h4>
           <p>Proyectista Visual</p>
         </div>
       </div>
+      <p class="equipo__deslizar">Desliza <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></p>
     </div>
   </section>
   </div>
