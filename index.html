@@ -1322,7 +1322,7 @@
         const title = document.createElement('h4');
         const link = document.createElement('a');
         const postUrl = new URL(post.link);
-        link.href = postUrl.origin === 'https://atelier910.com' && postUrl.pathname.startsWith('/blog/') ? postUrl.href : '/blog/';
+        link.href = postUrl.origin === 'https://atelier910.com' && postUrl.pathname.startsWith('/blog/') ? postUrl.href : 'https://atelier910.com/blog/';
         link.textContent = texto(post.title.rendered);
         title.append(link);
         const meta = document.createElement('p');
