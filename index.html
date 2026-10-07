@@ -629,7 +629,7 @@
         <a href="#inicio" data-panel="inicio">Inicio</a>
         <a href="#trayectoria" data-panel="equipo">Equipo A9.10</a>
         <a href="#obra" data-panel="proyectos">Proyectos</a>
-        <a href="#blog" data-panel="blog">Blog</a>
+      <a href="/blog/">Blog</a>
       </nav>
       <a class="btn-contacto" href="#contacto" data-panel="contacto">Contacto</a>
     </div>
@@ -655,7 +655,7 @@
   <a href="#inicio" data-panel="inicio">Inicio</a>
   <a href="#trayectoria" data-panel="equipo">Equipo A9.10</a>
   <a href="#obra" data-panel="proyectos">Proyectos</a>
-  <a href="#blog" data-panel="blog">Blog</a>
+  <a href="/blog/">Blog</a>
   <a href="#contacto" data-panel="contacto">Contacto</a>
 </nav>
 
@@ -1293,32 +1293,62 @@
       + '&body=' + encodeURIComponent(cuerpo);
   });
 
-  /* Blog. ENTRADAS esta vacio a proposito: la clienta todavia no entrego articulos y aca no
-     se inventa contenido. Al cargar el array con {titulo, fecha, autor, bajada, img, url}
-     el listado se arma solo con el formato de la referencia del brief. */
-  const ENTRADAS = [];
-
   const blogLista = document.getElementById('blogLista');
-  if (ENTRADAS.length) {
-    blogLista.innerHTML = ENTRADAS.map((e) => `
-      <article class="blog__item">
-        ${e.img ? `<img src="${e.img}" alt="${e.titulo}" loading="lazy">` : '<div class="ph"><span>Atelier 9.10</span></div>'}
-        <div>
-          <h4>${e.url ? `<a href="${e.url}">${e.titulo}</a>` : e.titulo}</h4>
-          <p class="blog__meta">${[e.autor, e.fecha].filter(Boolean).join(' · ')}</p>
-          <p>${e.bajada}</p>
-        </div>
-      </article>`).join('');
-  } else {
-    blogLista.innerHTML = `
-      <div class="blog__vacio">
-        <p>Las primeras publicaciones del estudio están en preparación.</p>
-        <a class="flecha" style="margin-top:1.2rem" href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">
-          Ver el trabajo en Instagram
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </a>
-      </div>`;
-  }
+  fetch('https://atelier910.com/blog/wp-json/wp/v2/posts?per_page=3&_embed')
+    .then((r) => r.ok ? r.json() : Promise.reject())
+    .then((posts) => {
+      if (!Array.isArray(posts)) return;
+      const articulos = posts.filter((post) => post.slug !== 'hello-world');
+      if (!articulos.length) return;
+      const texto = (html) => new DOMParser().parseFromString(html, 'text/html').body.textContent.trim();
+      const cards = articulos.map((post) => {
+        const article = document.createElement('article');
+        article.className = 'blog__item';
+        const media = post._embedded?.['wp:featuredmedia']?.[0];
+        const imageUrl = media?.source_url;
+        if (imageUrl && new URL(imageUrl).origin === 'https://atelier910.com') {
+          const img = document.createElement('img');
+          img.src = imageUrl;
+          img.alt = texto(media.alt_text || post.title.rendered);
+          img.loading = 'lazy';
+          article.append(img);
+        } else {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'ph';
+          placeholder.innerHTML = '<span>Atelier 9.10</span>';
+          article.append(placeholder);
+        }
+        const body = document.createElement('div');
+        const title = document.createElement('h4');
+        const link = document.createElement('a');
+        const postUrl = new URL(post.link);
+        link.href = postUrl.origin === 'https://atelier910.com' && postUrl.pathname.startsWith('/blog/') ? postUrl.href : '/blog/';
+        link.textContent = texto(post.title.rendered);
+        title.append(link);
+        const meta = document.createElement('p');
+        meta.className = 'blog__meta';
+        meta.textContent = `${post._embedded?.author?.[0]?.name || 'Atelier 9.10'} · ${new Intl.DateTimeFormat('es-PE', { dateStyle: 'long' }).format(new Date(post.date))}`;
+        const excerpt = document.createElement('p');
+        excerpt.textContent = texto(post.excerpt.rendered);
+        body.append(title, meta, excerpt);
+        article.append(body);
+        return article;
+      });
+      const archivo = document.createElement('a');
+      archivo.className = 'flecha';
+      archivo.href = 'https://atelier910.com/blog/';
+      archivo.textContent = 'Ver todas las publicaciones';
+      blogLista.replaceChildren(...cards, archivo);
+    })
+    .catch(() => {});
+  blogLista.innerHTML = `
+    <div class="blog__vacio">
+      <p>Las primeras publicaciones del estudio están en preparación.</p>
+      <a class="flecha" style="margin-top:1.2rem" href="https://atelier910.com/blog/">
+        Visitar el blog
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+    </div>`;
 
   document.querySelectorAll('.filtro button').forEach((b) => {
     b.addEventListener('click', () => {
