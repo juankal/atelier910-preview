@@ -302,7 +302,7 @@
   .serv--sf .serv__im{background:linear-gradient(135deg,var(--carbon),var(--azul-marino))}
   .serv--sf .serv__im::before{
     content:"";position:absolute;inset:0;margin:auto;width:38%;aspect-ratio:1;
-    background:url(assets/marca/logo-marca.png) center/contain no-repeat;opacity:.13;
+    background:url(assets/marca/logo-marca.webp) center/contain no-repeat;opacity:.13;
   }
   .serv__im::after{
     content:"";position:absolute;inset:0;pointer-events:none;
@@ -428,7 +428,7 @@
   }
   .equipo__foto::before{
     content:"";position:absolute;inset:0;margin:auto;width:38%;aspect-ratio:1;
-    background:url(assets/marca/logo-marca.png) center/contain no-repeat;opacity:.14;
+    background:url(assets/marca/logo-marca.webp) center/contain no-repeat;opacity:.14;
   }
   .equipo__deslizar{
     display:flex;align-items:center;gap:.4rem;margin-top:.9rem;
@@ -450,7 +450,7 @@
   #equipo > .wrap::before{
     content:"";position:absolute;z-index:-1;
     aspect-ratio:1;pointer-events:none;
-    background:url(assets/marca/logo-marca.png) center/contain no-repeat;
+    background:url(assets/marca/logo-marca.webp) center/contain no-repeat;
     opacity:.06;
   }
   @media(max-width:759.98px){
@@ -535,7 +535,7 @@
   }
   .ph::before{
     content:"";position:absolute;inset:0;margin:auto;width:42%;aspect-ratio:1;
-    background:url(assets/marca/logo-marca.png) center/contain no-repeat;opacity:.14;
+    background:url(assets/marca/logo-marca.webp) center/contain no-repeat;opacity:.14;
   }
   .ph span{
     position:relative;color:var(--gris-claro);font-family:'Antonio',sans-serif;
@@ -669,7 +669,7 @@
       <svg class="i-abrir" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       <svg class="i-cerrar" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
-    <a href="#inicio" data-panel="inicio" aria-label="Ir al inicio"><img src="assets/marca/logo-marca.png" alt="Atelier 9.10" width="31" height="38"></a>
+    <a href="#inicio" data-panel="inicio" aria-label="Ir al inicio"><img src="assets/marca/logo-marca.webp" alt="Atelier 9.10" width="31" height="38"></a>
     <div class="barra__acciones">
       <nav>
         <a href="#inicio" data-panel="inicio">Inicio</a>
@@ -717,8 +717,8 @@
            fetchpriority="high"
            width="1507"
            height="1124">
-      <img src="assets/obra/casa-asqui-vista.webp" alt="Casa Asqui, vista interior" loading="lazy" width="1400" height="1043">
-      <img src="assets/obra/oficina-institucional-vista.webp" alt="Oficina institucional, vista interior" loading="lazy" width="1400" height="1002">
+      <img src="assets/obra/casa-asqui-vista.webp" alt="Casa Asqui, vista interior" loading="lazy" width="850" height="633">
+      <img src="assets/obra/oficina-institucional-vista.webp" alt="Oficina institucional, vista interior" loading="lazy" width="850" height="608">
       <img src="assets/obra/casa-valeriano-fachada.webp" alt="Casa Valeriano, fachada frente al mar" loading="lazy" width="600" height="844">
     </div>
     <div class="wrap hero__in">
@@ -1087,7 +1087,7 @@
   </div>
   <div class="wrap footer__base">
     <div class="footer__marca">
-      <a href="#inicio" data-panel="inicio" aria-label="Ir al inicio"><img src="assets/marca/logo-marca.png" alt="Atelier 9.10" width="26" height="32" loading="lazy"></a>
+      <a href="#inicio" data-panel="inicio" aria-label="Ir al inicio"><img src="assets/marca/logo-marca.webp" alt="Atelier 9.10" width="26" height="32" loading="lazy"></a>
     </div>
     <div class="footer__base-der">
       <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Instagram</a>
@@ -1129,6 +1129,7 @@
   const panels = [...document.querySelectorAll('.panel')];
   const navLinks = [...document.querySelectorAll('a[data-panel]')];
   const mostrarPanel = (nombre, { empujarHash = true } = {}) => {
+    if (nombre === 'proyectos') renderGrilla();
     if (!panels.some((p) => p.dataset.panel === nombre)) nombre = 'inicio';
     panels.forEach((p) => { p.hidden = p.dataset.panel !== nombre; });
     navLinks.forEach((a) => a.classList.toggle('activo', a.dataset.panel === nombre));
@@ -1250,25 +1251,38 @@
   };
 
   const grilla = document.getElementById('grilla');
-  OBRAS.forEach((o, idx) => {
-    const el = document.createElement('article');
-    el.className = 'obra-card mostrar';
-    el.dataset.cat = o.cat;
-    el.dataset.idx = idx;
-    const media = o.imgs
-      ? `<img src="${o.imgs[0]}" alt="${o.nom}" loading="lazy">`
-      : `<div class="ph"><span>${o.nom}</span></div>`;
-    const cuenta = o.imgs && o.imgs.length > 1 ? ` · ${o.imgs.length} fotos` : '';
-    el.innerHTML = `
-      <div class="obra-card__im">${media}</div>
-      <div class="obra-card__cab"><h4>${o.nom}</h4>
-        <span class="flecha">Ver <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-      </div>
-      <div class="obra-card__fila">
-        <span>${o.etiqueta}${cuenta}<b>${o.ub}</b></span>
-      </div>`;
-    grilla.appendChild(el);
-  });
+  let grillaLista = false;
+  const renderGrilla = () => {
+    if (grillaLista) return;
+    grillaLista = true;
+    const fragment = document.createDocumentFragment();
+    OBRAS.forEach((o, idx) => {
+      const el = document.createElement('article');
+      el.className = 'obra-card mostrar';
+      el.dataset.cat = o.cat;
+      el.dataset.idx = idx;
+      const media = o.imgs
+        ? `<img src="${o.imgs[0]}" alt="${o.nom}" loading="lazy">`
+        : `<div class="ph"><span>${o.nom}</span></div>`;
+      const cuenta = o.imgs && o.imgs.length > 1 ? ` · ${o.imgs.length} fotos` : '';
+      el.innerHTML = `
+        <div class="obra-card__im">${media}</div>
+        <div class="obra-card__cab"><h4>${o.nom}</h4>
+          <span class="flecha">Ver <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </div>
+        <div class="obra-card__fila">
+          <span>${o.etiqueta}${cuenta}<b>${o.ub}</b></span>
+        </div>`;
+      fragment.appendChild(el);
+    });
+    grilla.appendChild(fragment);
+  };
+  if (location.hash === '#obra' || location.hash === '#proyectos') renderGrilla();
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(renderGrilla, { timeout: 3500 });
+  } else {
+    setTimeout(renderGrilla, 2500);
+  }
 
   // Ficha de obra (modal con la galería completa)
   const ficha = document.getElementById('ficha');
@@ -1406,6 +1420,7 @@
 
   document.querySelectorAll('.filtro button').forEach((b) => {
     b.addEventListener('click', () => {
+      renderGrilla();
       document.querySelectorAll('.filtro button').forEach((x) => x.classList.remove('activo'));
       b.classList.add('activo');
       const f = b.dataset.f;
