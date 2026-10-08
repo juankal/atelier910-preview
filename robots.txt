@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemaps
 Sitemap: https://atelier910.com/sitemap.xml
+Sitemap: https://atelier910.com/blog/wp-sitemap.xml
