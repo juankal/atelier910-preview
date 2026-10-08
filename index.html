@@ -12,7 +12,8 @@
 <meta property="og:description" content="Estudio de arquitectura y diseño de interiores en Tacna, Perú. Arquitectura de autor, diseño de atmósferas y materialización de proyectos con identidad y elegancia atemporal.">
 <meta property="og:image" content="https://atelier910.com/assets/obra/french-essencs-plazavea-vista.jpg">
 <link rel="icon" type="image/png" href="https://atelier910.com/assets/marca/logo-marca.png">
-<link rel="preload" as="image" href="assets/obra/french-essencs-plazavea-vista.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="assets/obra/french-essencs-plazavea-mob.webp" type="image/webp" media="(max-width: 640px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/obra/french-essencs-plazavea-vista.webp" type="image/webp" media="(min-width: 641px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600;700&family=Allura&family=Barlow+Condensed:wght@300;400;500;600&display=swap">
@@ -676,10 +677,17 @@
   <div class="panel" id="panel-inicio" data-panel="inicio">
   <header class="hero">
     <div class="hero__cap" id="heroCap">
-      <img src="assets/obra/french-essencs-plazavea-vista.jpg" alt="French Essenc's, local en Plaza Vea" class="viva" fetchpriority="high" width="1507" height="1124">
-      <img src="assets/obra/casa-asqui-vista.jpg" alt="Casa Asqui, vista interior">
-      <img src="assets/obra/oficina-institucional-vista.jpg" alt="Oficina institucional, vista interior">
-      <img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada frente al mar">
+      <img src="assets/obra/french-essencs-plazavea-vista.jpg"
+           srcset="assets/obra/french-essencs-plazavea-mob.webp 800w, assets/obra/french-essencs-plazavea-vista.webp 1507w"
+           sizes="(max-width: 640px) 100vw, 1507px"
+           alt="French Essenc's, local en Plaza Vea"
+           class="viva"
+           fetchpriority="high"
+           width="1507"
+           height="1124">
+      <img src="assets/obra/casa-asqui-vista.jpg" alt="Casa Asqui, vista interior" loading="lazy" width="1507" height="1123">
+      <img src="assets/obra/oficina-institucional-vista.jpg" alt="Oficina institucional, vista interior" loading="lazy" width="1509" height="1081">
+      <img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada frente al mar" loading="lazy" width="1057" height="1487">
     </div>
     <div class="wrap hero__in">
       <h1 class="tit rv"><span>Identidad +</span><span>Atemporal + Elegancia</span></h1>
@@ -699,7 +707,7 @@
     </div>
     <div class="servicios__band">
         <article class="serv rv" tabindex="0">
-          <div class="serv__im"><img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada" loading="lazy"></div>
+          <div class="serv__im"><img src="assets/obra/casa-valeriano-fachada.jpg" alt="Casa Valeriano, fachada" loading="lazy" width="1057" height="1487"></div>
           <div class="serv__txt">
             <span class="serv__n">01</span>
             <h3>Arquitectura de autor</h3>
@@ -707,7 +715,7 @@
           </div>
         </article>
         <article class="serv rv" tabindex="0">
-          <div class="serv__im"><img src="assets/obra/casa-laura-patio.jpg" alt="Casa Laura, patio interior" loading="lazy"></div>
+          <div class="serv__im"><img src="assets/obra/casa-laura-patio.jpg" alt="Casa Laura, patio interior" loading="lazy" width="458" height="537"></div>
           <div class="serv__txt">
             <span class="serv__n">02</span>
             <h3>Diseño de interiores y atmósferas</h3>
@@ -723,7 +731,7 @@
           </div>
         </article>
         <article class="serv rv" tabindex="0">
-          <div class="serv__im"><img src="assets/obra/one-marie-estudio-exhibidor.jpg" alt="Estudio One Marie, mobiliario de exhibición a medida" loading="lazy"></div>
+          <div class="serv__im"><img src="assets/obra/one-marie-estudio-exhibidor.jpg" alt="Estudio One Marie, mobiliario de exhibición a medida" loading="lazy" width="572" height="458"></div>
           <div class="serv__txt">
             <span class="serv__n">04</span>
             <h3>Diseño y fabricación de mobiliario (bespoke)</h3>
@@ -731,7 +739,7 @@
           </div>
         </article>
         <article class="serv rv" tabindex="0">
-          <div class="serv__im"><img src="assets/obra/animales-nocturnos-comedor.jpg" alt="Animales Nocturnos, comedor ejecutado" loading="lazy"></div>
+          <div class="serv__im"><img src="assets/obra/animales-nocturnos-comedor.jpg" alt="Animales Nocturnos, comedor ejecutado" loading="lazy" width="454" height="568"></div>
           <div class="serv__txt">
             <span class="serv__n">05</span>
             <h3>Ejecución y materialización de proyectos</h3>
@@ -739,7 +747,7 @@
           </div>
         </article>
         <article class="serv rv" tabindex="0">
-          <div class="serv__im"><img src="assets/obra/french-essencs-plazavea-counter.jpg" alt="French Essenc’s Plaza Vea, counter de venta" loading="lazy"></div>
+          <div class="serv__im"><img src="assets/obra/french-essencs-plazavea-counter.jpg" alt="French Essenc’s Plaza Vea, counter de venta" loading="lazy" width="458" height="570"></div>
           <div class="serv__txt">
             <span class="serv__n">06</span>
             <h3>Consultoría espacial corporativa</h3>
@@ -775,7 +783,7 @@
         </div>
       </article>
       <article class="destacado rv" data-obra="Animales Nocturnos — Arequipa" tabindex="0" role="button" aria-label="Ver Animales Nocturnos">
-        <div class="destacado__im"><img src="assets/obra/animales-nocturnos-comedor.jpg" alt="Animales Nocturnos, comedor abierto al patio interior" loading="lazy"></div>
+        <div class="destacado__im"><img src="assets/obra/animales-nocturnos-comedor.jpg" alt="Animales Nocturnos, comedor abierto al patio interior" loading="lazy" width="454" height="568"></div>
         <div class="destacado__ov">
           <p class="eyebrow">Gastronómico</p>
           <h3>Animales Nocturnos</h3>
@@ -882,8 +890,8 @@
       </div>
     </div>
     <div class="wrap par-asim rv">
-      <figure class="im-a"><img src="assets/obra/casa-basadre-sala.jpg" alt="Casa Basadre, sala a doble altura"></figure>
-      <figure class="im-b"><img src="assets/obra/casa-yaco-comedor.jpg" alt="Casa Yaco, comedor con mural botánico"></figure>
+      <figure class="im-a"><img src="assets/obra/casa-basadre-sala.jpg" alt="Casa Basadre, sala a doble altura" width="705" height="1064" loading="lazy"></figure>
+      <figure class="im-b"><img src="assets/obra/casa-yaco-comedor.jpg" alt="Casa Yaco, comedor con mural botánico" width="705" height="1065" loading="lazy"></figure>
     </div>
     <div class="wrap rv" style="margin-top:2.8rem">
       <p class="promesa">"El espacio arquitectónico debe ser un reflejo de la vida humana, debe adaptarse a ella."</p>
@@ -1047,7 +1055,7 @@
   </div>
   <div class="wrap footer__base">
     <div class="footer__marca">
-      <a href="#inicio" data-panel="inicio" aria-label="Ir al inicio"><img src="assets/marca/logo-marca.png" alt="Atelier 9.10"></a>
+      <a href="#inicio" data-panel="inicio" aria-label="Ir al inicio"><img src="assets/marca/logo-marca.png" alt="Atelier 9.10" width="31" height="38" loading="lazy"></a>
     </div>
     <div class="footer__base-der">
       <a href="https://instagram.com/atelier9.10" target="_blank" rel="noopener">Instagram</a>
